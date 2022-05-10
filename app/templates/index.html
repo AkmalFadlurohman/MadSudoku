@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="game-container">
+	<div class="grid-container">
+		<form action="#" method="post" name="sudoku-board">
+			{% for i in range(9) %}
+				<div class="grid-row">
+					{% for j in range(9) %}
+						<div class="grid-cell">
+							<input type="text" maxlength="1" name='cell-input[{{ j+i*9 }}]' class="def-txt-input">
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
+			<h1 class="text-center">Timer: <span id="timer">00:00</span></h1>
+			<div class="button-container">
+				<button id="timer-btn" type="button" class="btn btn-danger btn-block">Start</button>
+				<input type="submit" value="Solve" class="btn btn-primary btn-block" disabled>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}
