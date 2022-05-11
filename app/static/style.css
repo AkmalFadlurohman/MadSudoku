@@ -5,8 +5,20 @@ html, body {
 	background : #faf8ef;
 }
 
-body {
-	margin-top : 40px;
+.navbar-brand {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	text-align: center;
+	color: black;
+	margin:0 auto;
+}
+.navbar-toggle {
+	z-index:3;
+}
+
+.glyphicon {
+	color: black;
 }
 
 .container {
