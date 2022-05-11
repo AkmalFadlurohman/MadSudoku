@@ -7,6 +7,17 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+			function openNav() {
+				document.getElementById("left-sidebar").style.width = "250px";
+			}
+
+			/* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+			function closeNav() {
+				document.getElementById("left-sidebar").style.width = "0";
+			}
+		</script>
 		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
 	</head>
 	<body>
@@ -15,7 +26,7 @@
 			<h1 class="navbar-brand">MadSudoku</h1>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-left">
-					<li><a href="#"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
+					<li><a href="#" onclick="openNav()"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
 					<li><a href="#"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -23,8 +34,16 @@
 				</ul>
 			</div>
 		</nav>
+		<!-- Side Bar, Source: https://www.w3schools.com/howto/howto_js_collapse_sidebar.asp -->
+		<div id="left-sidebar" class="sidebar text-center">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<h2>Challenges</h2>
+			<hr/>
+			<a href="#">Newbie</a>
+			<a href="#">Expert</a>
+			<a href="#">Master</a>
+		</div>
 		<div class="container">
-			<h1 class="display-1 text-center" style="margin-top: 30px;">Challenge Name</h1>
 			{% block content %}{% endblock %}
 		</div>
 	</body>
