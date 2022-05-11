@@ -10,6 +10,7 @@ import json
 def index():
     return render_template("index.html")
 
+### get a single challenge data by id
 @app.route("/challenge", methods=['GET'])
 def get_challenge():
     challenge_id = request.args.get('id')
@@ -29,6 +30,14 @@ def get_challenge():
                         for k in ('name', 'level', 'question', 'solution')}
     print(challenge_dict)
     return json.dumps(challenge_dict), 200
+
+@app.route("/challenge/list", methods=['GET'])
+def get_challenge_list():
+    challenges = Challenge.query.all()
+    challenge_list = []
+    for c in challenges:
+        challenge_list.append({'id':c.id, 'name':c.name, 'level':c.level})
+    return json.dumps(challenge_list)
 
 @app.route("/test", methods=['GET'])
 def tset():
