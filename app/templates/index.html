@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <h1 class="display-1 text-center" style="margin-top: 30px;">Challenge Name</h1>
+<div class="row text-right">
+	Hello, <u class="text-primary"><a href="#" id="user-name" data-toggle="modal" data-target="#username-modal">Guest</a></u>
+</div>
 <div class="game-container">
 	<div class="grid-container">
 		<form action="#" method="post" name="sudoku-board">
@@ -8,7 +11,7 @@
 				<div class="grid-row">
 					{% for j in range(9) %}
 						<div class="grid-cell">
-							<input type="text" maxlength="1" name='cell-input[{{ j+i*9 }}]' class="def-txt-input">
+							<input type="text" maxlength="1" name='cell-input[{{ j+i*9 }}]' class="def-txt-input" disabled>
 						</div>
 					{% endfor %}
 				</div>
@@ -19,6 +22,21 @@
 				<input type="submit" value="Solve" class="btn btn-primary btn-block" disabled>
 			</div>
 		</form>
+	</div>
+</div>
+<!-- Edit Username Modal -->
+<div id="username-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title text-center">CHANGE USERNAME</h4>
+			</div>
+			<div class="modal-body">
+				<p>Some text in the modal.</p>
+			</div>
+		</div>
 	</div>
 </div>
 {% endblock %}

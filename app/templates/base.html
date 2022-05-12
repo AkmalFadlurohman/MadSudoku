@@ -8,32 +8,14 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
-			/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+			/* Set the width of the sidebar to 20% of screen width */
 			function openSidebar() {
-				document.getElementById("left-sidebar").style.width = "250px";
+				document.getElementById("left-sidebar").style.width = "20%";
 			}
 
-			/* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+			/* Set sidebar width to 0 (Hide sidebar) */
 			function closeSidebar() {
 				document.getElementById("left-sidebar").style.width = "0";
-			}
-
-			function openModal() {
-				// Get the modal
-				var modal = document.getElementById("info-modal");
-				modal.style.display = "block";
-				// Get the <span> element that closes the modal
-				var span = document.getElementById("info-modal-close");
-				// When the user clicks on <span> (x), close the modal
-				span.onclick = function() {
-					modal.style.display = "none";
-				}
-				// When the user clicks anywhere outside of the modal, close it
-				window.onclick = function(event) {
-					if (event.target == modal) {
-						modal.style.display = "none";
-					}
-				}
 			}
 		</script>
 		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
@@ -48,7 +30,7 @@
 					<li><a href="#" data-toggle="modal" data-target="#info-modal"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-signal"></span></a></li>
+					<li><a href="#" data-toggle="modal" data-target="#stats-modal"><span class="glyphicon glyphicon-signal"></span></a></li>
 				</ul>
 			</div>
 		</nav>
@@ -69,7 +51,22 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Modal Header</h4>
+						<h4 class="modal-title text-center">HOW TO PLAY</h4>
+					</div>
+					<div class="modal-body">
+						<p>Some text in the modal.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Statistics Modal -->
+		<div id="stats-modal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title text-center">STATISTICS</h4>
 					</div>
 					<div class="modal-body">
 						<p>Some text in the modal.</p>
