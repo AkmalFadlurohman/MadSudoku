@@ -150,11 +150,11 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 
 .button-container {
-	position      : relative;
+	/* position      : relative; */
 	margin-top    : 40px;
 	margin-bottom : 100px;
 }
 
 .button-container > * {
-	margin-bottom : 20px;
+	/* margin-bottom : 20px; */
 }

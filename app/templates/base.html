@@ -17,6 +17,10 @@
 			function closeSidebar() {
 				document.getElementById("left-sidebar").style.width = "0";
 			}
+
+			function displayChallengeTitle(challengeTitle) {
+				document.getElementById("challenge-name").innerHTML = challengeTitle;
+			}
 		</script>
 		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
 	</head>
@@ -39,9 +43,9 @@
 			<a href="javascript:void(0)" class="close-button" onclick="closeSidebar()">&times;</a>
 			<h2>Challenges</h2>
 			<hr/>
-			<a href="#">Newbie</a>
-			<a href="#">Expert</a>
-			<a href="#">Master</a>
+			<a href="#" onclick="displayChallengeTitle(this.innerHTML)">Newbie</a>
+			<a href="#" onclick="displayChallengeTitle(this.innerHTML)">Expert</a>
+			<a href="#" onclick="displayChallengeTitle(this.innerHTML)">Master</a>
 		</div>
 		<!-- Modals, Source: https://www.w3schools.com/howto/howto_css_modals.asp -->
 		<!-- How-to-Play Modal -->
@@ -74,6 +78,7 @@
 				</div>
 			</div>
 		</div>
+		<h1 id="challenge-name" class="display-1 text-center" style="margin-top: 30px;">MadSudoku Challenge</h1>
 		<!-- Game board container -->
 		<div class="container">
 			{% block content %}{% endblock %}

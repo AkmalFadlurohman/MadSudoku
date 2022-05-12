@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="display-1 text-center" style="margin-top: 30px;">Challenge Name</h1>
 <div class="row text-right">
 	Hello, <u class="text-primary"><a href="#" id="user-name" data-toggle="modal" data-target="#username-modal">Guest</a></u>
 </div>
@@ -16,10 +15,16 @@
 					{% endfor %}
 				</div>
 			{% endfor %}
-			<h1 class="text-center">Timer: <span id="timer">00:00</span></h1>
-			<div class="button-container">
-				<button id="timer-btn" type="button" class="btn btn-danger btn-block">Start</button>
-				<input type="submit" value="Solve" class="btn btn-primary btn-block" disabled>
+			<div class="row button-container">
+				<div class="col-sm-2">
+					<button id="timer-btn" type="button" class="btn btn-danger">Start</button>
+				</div>
+				<div class="col-sm-6">
+					<h2 class="row text-center">Timer: <span id="timer">00:00</span></h2>
+				</div>
+				<div class="col-sm-2">
+					<input type="submit" value="Check" class="btn btn-primary" disabled>
+				</div>
 			</div>
 		</form>
 	</div>
