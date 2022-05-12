@@ -9,13 +9,31 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
-			function openNav() {
+			function openSidebar() {
 				document.getElementById("left-sidebar").style.width = "250px";
 			}
 
 			/* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
-			function closeNav() {
+			function closeSidebar() {
 				document.getElementById("left-sidebar").style.width = "0";
+			}
+
+			function openModal() {
+				// Get the modal
+				var modal = document.getElementById("info-modal");
+				modal.style.display = "block";
+				// Get the <span> element that closes the modal
+				var span = document.getElementById("info-modal-close");
+				// When the user clicks on <span> (x), close the modal
+				span.onclick = function() {
+					modal.style.display = "none";
+				}
+				// When the user clicks anywhere outside of the modal, close it
+				window.onclick = function(event) {
+					if (event.target == modal) {
+						modal.style.display = "none";
+					}
+				}
 			}
 		</script>
 		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
@@ -26,8 +44,8 @@
 			<h1 class="navbar-brand">MadSudoku</h1>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-left">
-					<li><a href="#" onclick="openNav()"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
-					<li><a href="#"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+					<li><a href="#" onclick="openSidebar()"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
+					<li><a href="#" data-toggle="modal" data-target="#info-modal"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#"><span class="glyphicon glyphicon-signal"></span></a></li>
@@ -36,13 +54,30 @@
 		</nav>
 		<!-- Side Bar, Source: https://www.w3schools.com/howto/howto_js_collapse_sidebar.asp -->
 		<div id="left-sidebar" class="sidebar text-center">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<a href="javascript:void(0)" class="close-button" onclick="closeSidebar()">&times;</a>
 			<h2>Challenges</h2>
 			<hr/>
 			<a href="#">Newbie</a>
 			<a href="#">Expert</a>
 			<a href="#">Master</a>
 		</div>
+		<!-- Modals, Source: https://www.w3schools.com/howto/howto_css_modals.asp -->
+		<!-- How-to-Play Modal -->
+		<div id="info-modal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Modal Header</h4>
+					</div>
+					<div class="modal-body">
+						<p>Some text in the modal.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Game board container -->
 		<div class="container">
 			{% block content %}{% endblock %}
 		</div>
