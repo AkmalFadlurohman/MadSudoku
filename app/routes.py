@@ -71,13 +71,14 @@ def is_clear():
     if not flag:
         return msg, code
 
+    #1. convert json to dictionary and set values
     body_dict = json.loads(json_body)
     challenge_id = body_dict['challenge_id']
     user_name = body_dict['user_name']
     clear_time = int(body_dict['clear_time'])
     answer = body_dict['answer']
 
-    # 1. check if the answer of user is correct
+    # 2. check if the answer of user is correct
     challenge = Challenge.query.filter_by(id=challenge_id).first()
     if not challenge:
         return ERR_MSG_NOT_EXISTING.format("challenge_id"), 400
@@ -91,16 +92,17 @@ def is_clear():
         if not is_clear:
             break
 
-    # 2.if it was incorrect, response false
+    # 3.if it was incorrect, response false
     if not is_clear:
-        return "{clear:false}", 200
-    # 3.if it was correct, save the result and reponse true
+        return '{"clear":false}', 200
+    
+    # 4.if it was correct, save the result and reponse true
     result = Result(user_name=user_name, challenge_id=challenge_id, clear_time=clear_time, 
             clear_date=datetime.now())
     db.session.add(result)
     db.session.commit()
 
-    return '{clear:true}', 200
+    return '{"clear":true}', 200
 
 def validate_clear(body):
     flag, msg, code = check_json_param(body, 'body')
