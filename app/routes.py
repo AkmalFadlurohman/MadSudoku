@@ -14,18 +14,14 @@ def index():
 @app.route("/challenge", methods=['GET'])
 def get_challenge():
     challenge_id = request.args.get('id')
-    if(not challenge_id):
-        return "challenge_id is required.", 400
-    if(not challenge_id.isdigit()):
-        return "challenge_id must be an integer", 400
-    if(int(challenge_id) < 1):
-        return "challenge_id must be and positive integer", 400
-    
+    flag, msg, code = check_id(challenge_id, 'challenge_id')
+    if not flag:
+        return msg, code
     challenge = Challenge.query.filter_by(id=challenge_id).first()
-    if(challenge is None):
+    if challenge is None:
         return "non existing challenge_id.", 404
     challenge_dict = {k:challenge.__dict__[k] \
-                        if(not k in ('question', 'solution')) \
+                        if not k in ('question', 'solution') \
                         else json.loads(challenge.__dict__[k]) \
                         for k in ('name', 'level', 'question', 'solution')}
     print(challenge_dict)
@@ -41,8 +37,21 @@ def get_challenge_list():
 
 @app.route("/result", methods=['GET'])
 def get_result():
+    challenge_id = request.args.get('challenge_id')
+    flag, msg, code = check_id(challenge_id, 'challenge_id')
+    if not flag:
+        return msg, code
     # return results by challenge_id
-    return 'not implemented yet'
+    results = Result.query.filter_by(challenge_id=challenge_id).all()
+    if not results:
+        return "non existing challenge_id", 404
+    result_str = ""
+    for r in results:
+        result_str += json.dumps({k:r.__dict__[k] \
+                if k is not 'clear_date'\
+                else r.__dict__[k].strftime("%d/%m/%Y, %H:%M:%S")
+                for k in ('id', 'user_name', 'challenge_id', 'clear_time', 'clear_date')})
+    return result_str, 200
 
 @app.route("/result/check", methods=['POST'])
 def is_clear():
@@ -54,3 +63,13 @@ def is_clear():
 @app.route("/test", methods=['GET'])
 def tset():
     return 'called'
+
+### common functions
+def check_id(id, id_name):
+    if not id:
+        return False, "{} is required.".format(id_name), 400
+    if not id.isdigit():
+        return False, "{} must be an integer".format(id_name), 400
+    if int(id) < 1:
+        return False, "{} must be and positive integer".format(id_name), 400
+    return True, None, None
