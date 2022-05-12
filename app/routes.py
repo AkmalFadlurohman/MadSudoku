@@ -4,6 +4,7 @@ from flask import render_template, request, flash, redirect, url_for
 from app import db
 from app.models import Result, Challenge
 import json
+from datetime import datetime
 
 ERR_MSG_PARAM_EMPTY = "{} is required."
 ERR_MSG_NOT_EXISTING = "non existing {}."
@@ -65,28 +66,16 @@ def get_result():
 @app.route("/result/check", methods=['POST'])
 def is_clear():
     # 0. validation
-    json_body = request.args.data
-    flag, msg, code = validate_claer(json_body)
+    json_body = request.data
+    flag, msg, code = validate_clear(json_body)
     if not flag:
         return msg, code
 
-    body_dict = json.loads(body)
+    body_dict = json.loads(json_body)
     challenge_id = body_dict['challenge_id']
     user_name = body_dict['user_name']
     clear_time = int(body_dict['clear_time'])
-    answer = json.loads(body_dic['answer'])
-    #flag, msg, code = check_json_param(json_body)
-    #if not flag:
-    #    return msg, code
-    #body_dict = json.loads(json_body)
-    #challenge_id = body_dict['challenge_id']
-    #flag, msg, code = check_digit(challenge_id, 'challenge_id')
-    #if not flag:
-    #    return msg, code
-    #flag, msg, code = check_param(body_dict['user_name'])
-    #answer = body_dict['answer']
-    #if type(answer) is not list:
-    #    return "param 'asnwer' must be a list.", 400
+    answer = body_dict['answer']
 
     # 1. check if the answer of user is correct
     challenge = Challenge.query.filter_by(id=challenge_id).first()
@@ -102,32 +91,47 @@ def is_clear():
         if not is_clear:
             break
 
-    # 2. if it was correct, save the result and reponse true
-    Result()
-    # 3. if it was incorrect, response false
-    return 'not implemented yet'
+    # 2.if it was incorrect, response false
+    if not is_clear:
+        return "{clear:false}", 200
+    # 3.if it was correct, save the result and reponse true
+    result = Result(user_name=user_name, challenge_id=challenge_id, clear_time=clear_time, 
+            clear_date=datetime.now())
+    db.session.add(result)
+    db.session.commit()
+
+    return '{clear:true}', 200
 
 def validate_clear(body):
-    flag, msg, code = check_json_param(body)
+    flag, msg, code = check_json_param(body, 'body')
     if not flag:
         return False, msg, code
     body_dict = json.loads(body)
 
-    challenge_id = body['challenge_id']
-    if not challenge_id:
-        return False, ERR_MSG_PARAM_EMPTY.format("challenge_id")
+    challenge_id = body_dict['challenge_id']
+    if challenge_id is None:
+        return False, ERR_MSG_PARAM_EMPTY.format("challenge_id"), 400
     if type(challenge_id) is not int:
         return False, ERR_MSG_MUST_INT.format("challenge_id"), 400
+    if challenge_id < 1:
+        return False, ERR_MSG_MUST_POSITIVE_INT.format("challenge_id"), 400
     
     user_name = body_dict['user_name']
-    if not user_name:
-        return False, 
-
-    flag, msg, code = check_digit(body_dict['clear_time'], 'clear_time')
+    flag, msg, code = check_param(user_name, 'user_name')
     if not flag:
-        return False, msg, code
+        return False, msg, code, 
+
+    clear_time = body_dict['clear_time']
+    if clear_time is None:
+        return False, ERR_MSG_PARAM_EMPTY.format("clear_time"), 400
+    if type(clear_time) is not int:
+        return False, ERR_MSG_MUST_INT.format("clear_time"), 400
+    if clear_time < 1:
+        return False, ERR_MSG_MUST_POSITIVE_INT.format("clear_time"), 400
 
     answer = body_dict['answer']
+    if not answer:
+        return False, ERR_MSG_PARAM_EMPTY.format("answer"), 400
     if type(answer) is not list:
         return False, ERR_MSG_MUST_LIST.format("asnwer"), 400
 
@@ -167,3 +171,4 @@ def check_param(param, name):
     if not param:
         return False, ERR_MSG_PARAM_EMPTY.format(name), 400
     return True, None, None
+
