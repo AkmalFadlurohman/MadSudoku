@@ -1,8 +1,3 @@
-// $('#reset').click(function(){
-//       hours =0;      mins =0;      seconds =0;
-//   $('#hours','#mins').html('00:');
-//   $('#seconds').html('00');
-// });
 var hours = 0;
 var mins = 0;
 var seconds = 0;
@@ -43,4 +38,8 @@ function resetTimer() {
 	$("#hours").html("00:");
 	$("#mins").html("00:");
 	$("#seconds").html("00");
+}
+
+function stopTimer() {
+	clearTimeout(timex);
 }

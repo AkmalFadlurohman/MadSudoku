@@ -9,32 +9,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script src="{{ url_for('static',filename='timer.js') }}"></script>
-		<script type="text/javascript">
-			/* Set the width of the sidebar to 20% of screen width */
-			function openSidebar() {
-				document.getElementById("left-sidebar").style.width = "20%";
-			}
-
-			/* Set sidebar width to 0 (Hide sidebar) */
-			function closeSidebar() {
-				document.getElementById("left-sidebar").style.width = "0";
-			}
-
-			function displayChallengeTitle(challengeTitle) {
-				resetTimer();
-				document.getElementById("challenge-name").innerHTML = challengeTitle;
-				startTimer();
-			}
-
-			function updateUsername() {
-				username = $("#username-input").val();
-				if (username == "") {
-					return false;
-				}
-				$("#username-view").text(username);
-				$("#username-modal").modal("hide");
-			}
-		</script>
+		<script src="{{ url_for('static',filename='script.js') }}"></script>
 	</head>
 	<body>
 		<!-- Navigation Bar, Source: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp -->
@@ -55,9 +30,9 @@
 			<a href="javascript:void(0)" class="close-button" onclick="closeSidebar()">&times;</a>
 			<h2>Challenges</h2>
 			<hr/>
-			<a href="#" onclick="displayChallengeTitle(this.innerHTML)">Newbie</a>
-			<a href="#" onclick="displayChallengeTitle(this.innerHTML)">Expert</a>
-			<a href="#" onclick="displayChallengeTitle(this.innerHTML)">Master</a>
+			<a href="#" onclick="startChallenge(this)">Newbie</a>
+			<a href="#" onclick="startChallenge(this)">Expert</a>
+			<a href="#" onclick="startChallenge(this)">Master</a>
 		</div>
 		<!-- Modals, Source: https://www.w3schools.com/howto/howto_css_modals.asp -->
 		<!-- How-to-Play Modal -->
@@ -99,7 +74,7 @@
 				</div>
 			</div>
 		</div>
-		<h1 id="challenge-name" class="display-1 text-center" style="margin-top: 30px;"></h1>
+		<h1 id="challenge-title" class="display-1 text-center" style="margin-top: 30px;"></h1>
 		<!-- Game board container -->
 		<div class="container">
 			{% block content %}{% endblock %}

@@ -149,7 +149,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	-webkit-appearance : none;
 }
 
-.button-container {
+.control-container {
 	/* position      : relative; */
 	margin-top    : 40px;
 	margin-bottom : 100px;
