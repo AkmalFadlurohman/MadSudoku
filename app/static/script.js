@@ -1,19 +1,25 @@
 /* Set the width of the sidebar to 20% of screen width */
 function openSidebar() {
-	document.getElementById("left-sidebar").style.width = "20%";
+	$("#left-sidebar").width("20%");
 }
 /* Set sidebar width to 0 (Hide sidebar) */
 function closeSidebar() {
-	document.getElementById("left-sidebar").style.width = "0";
+	$("#left-sidebar").width(0);
 }
 function startChallenge(challenge) {
 	resetTimer();
+	clearBoard();
 	setChallengeTitle(challenge.innerHTML);
 	startTimer();
 	$("#check-btn").prop("disabled", false);
 }
 function setChallengeTitle(challengeTitle) {
 	$("#challenge-title").text(challengeTitle);
+}
+function clearBoard() {
+	for (i = 0; i < 82; i++) {
+		$('.cell-txt-input[name="cell-input[' + (i) + ']"]').val("");
+	}
 }
 function updateUsername() {
 	username = $("#username-input").val();

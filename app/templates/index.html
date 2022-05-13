@@ -5,12 +5,12 @@
 </div>
 <div class="game-container">
 	<div class="grid-container">
-		<form action="#" method="post" name="sudoku-board">
+		<form action="#" name="sudoku-board">
 			{% for i in range(9) %}
 				<div class="grid-row">
 					{% for j in range(9) %}
 						<div class="grid-cell">
-							<input type="text" maxlength="1" name='cell-input[{{ j+i*9 }}]' class="def-txt-input" required>
+							<input type="text" maxlength="1" name="cell-input[{{ j+i*9 }}]" class="cell-txt-input" required>
 						</div>
 					{% endfor %}
 				</div>
