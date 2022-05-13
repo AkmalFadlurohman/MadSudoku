@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row text-right">
-	Hello, <u class="text-primary"><a href="#" id="user-name" data-toggle="modal" data-target="#username-modal">Guest</a></u>
+	Hello, <u class="text-primary"><a href="#" id="username-view" data-toggle="modal" data-target="#username-modal">Guest</a></u>
 </div>
 <div class="game-container">
 	<div class="grid-container">
@@ -36,10 +36,17 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title text-center">CHANGE USERNAME</h4>
+				<h4 class="modal-title text-center">EDIT USERNAME</h4>
 			</div>
 			<div class="modal-body">
-				<p>Some text in the modal.</p>
+				<form role="form" action="#">
+					<div class="form-group">
+						<input id="username-input" type="textarea" class="form-control" placeholder="New Username" required>
+					</div>
+					<div class="form-group">
+						<button class="btn btn-success" onclick="updateUsername()">Save</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

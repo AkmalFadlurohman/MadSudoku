@@ -21,6 +21,15 @@
 			function displayChallengeTitle(challengeTitle) {
 				document.getElementById("challenge-name").innerHTML = challengeTitle;
 			}
+
+			function updateUsername() {
+				username = $("#username-input").val();
+				if (username == "") {
+					return false;
+				}
+				$("#username-view").text(username);
+				$("#username-modal").modal("hide");
+			}
 		</script>
 		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
 	</head>
@@ -78,7 +87,7 @@
 				</div>
 			</div>
 		</div>
-		<h1 id="challenge-name" class="display-1 text-center" style="margin-top: 30px;">MadSudoku Challenge</h1>
+		<h1 id="challenge-name" class="display-1 text-center" style="margin-top: 30px;"></h1>
 		<!-- Game board container -->
 		<div class="container">
 			{% block content %}{% endblock %}
