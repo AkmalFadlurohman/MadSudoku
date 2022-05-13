@@ -4,9 +4,11 @@
 		<title>Mad Sudoku</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" type= "text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='style.css') }}">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<script src="{{ url_for('static',filename='timer.js') }}"></script>
 		<script type="text/javascript">
 			/* Set the width of the sidebar to 20% of screen width */
 			function openSidebar() {
@@ -19,7 +21,9 @@
 			}
 
 			function displayChallengeTitle(challengeTitle) {
+				resetTimer();
 				document.getElementById("challenge-name").innerHTML = challengeTitle;
+				startTimer();
 			}
 
 			function updateUsername() {
@@ -31,7 +35,6 @@
 				$("#username-modal").modal("hide");
 			}
 		</script>
-		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
 	</head>
 	<body>
 		<!-- Navigation Bar, Source: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp -->
