@@ -69,6 +69,7 @@
 						<h4 class="modal-title text-center">STATISTICS</h4>
 					</div>
 					<div class="modal-body">
+						<h1 id="stats-challenge" class="text-center"></h1>
 						<h1 class="text-center">Your time: <span id="stats-time">00:00:00</span></h1>
 						<br>
 						<h4 class="text-center">TOP 5 RANKS</h4>
@@ -101,7 +102,12 @@
 								</tr>
 							</tbody>
 						</table>
-						<button type="button" class="btn btn-success center-block">SHARE <span class="glyphicon glyphicon-share" style="color:white;"></button>
+						<button type="button" onclick="shareStats()" class="btn btn-success center-block">SHARE <span class="glyphicon glyphicon-share" style="color:white;"></button>
+						<div class="toast">
+							<div class="toast-body">
+								Copied to clipboard
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

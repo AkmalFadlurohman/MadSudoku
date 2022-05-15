@@ -15,6 +15,7 @@ function startChallenge(challenge) {
 }
 function setChallengeTitle(challengeTitle) {
 	$("#challenge-title").text(challengeTitle);
+	$("#stats-challenge").text(challengeTitle);
 }
 function clearBoard() {
 	for (i = 0; i < 82; i++) {
@@ -32,4 +33,18 @@ function updateUsername() {
 
 function stopChallenge() {
 	stopTimer();
+}
+
+function shareStats() {
+	var text = "Example text to appear on clipboard";
+	let temp = document.createElement("textarea");
+	temp.value = text;
+	temp.setAttribute("readonly", "");
+	temp.style.position = "absolute";
+	temp.style.left = "-9999px";
+	document.body.appendChild(temp);
+	temp.select();
+	document.execCommand("copy");
+	document.body.removeChild(temp);
+	$(".toast").toast("show");
 }
