@@ -1,12 +1,12 @@
 /* Set the width of the sidebar to 20% of screen width */
 function openSidebar() {
-	getChallenges(function(data) {
+	getChallengesList(function(data) {
 		if (data) {
 			const challenges = JSON.parse(data);
 			if (challenges.length > 0) {
 					$("#challenges-msg").hide();
 					for (var i=0;i<challenges.length;i++) {
-						$("#challenges-list").append("<a href='#' onclick='startChallenge(this)'>" + challenges[i].name + "</a>");
+						$("#challenges-list").append("<a href='#' onclick='startChallenge(this.innerHTML, " + challenges[i].id + ")'>" + challenges[i].name + "</a>");
 					}
 					$("#left-sidebar").width("20%");
 			}
@@ -19,19 +19,46 @@ function closeSidebar() {
 	$("#challenges-list").empty();
 	$("#left-sidebar").width(0);
 }
-function getChallenges(callback) {
-	$.ajax({url: "http://localhost:5000/challenge/list", success: function(result){
+function getChallengesList(callback) {
+	$.ajax({url: "http://localhost:5000/challenge/list", success: function(result) {
 		callback(result);
 	}});
 }
-function startChallenge(challenge) {
+function startChallenge(title, id) {
+	// stopTimer();
 	resetTimer();
 	clearBoard();
-	setChallengeTitle(challenge.innerHTML);
-	$("#stats-msg").hide();
-	$("#stats-ranks").show();
-	startTimer();
-	$("#check-btn").prop("disabled", false);
+	getChallengeData(id, function(data) {
+		if (data) {
+			var board = JSON.parse(data).question;
+			for (var i=0;i<board.length;i++) {
+				var j = 0;
+				while (j<board[i].length) {
+					if (board[i][j] == 0) {
+						j++;
+					} else {
+						var cellIdx = j+i*9;
+						$("#cell-input-"+cellIdx).val(board[i][j]);
+						$("#cell-input-"+cellIdx).prop("disabled", true);
+						j++;
+					}
+				}
+				setChallengeTitle(title);
+				$("#stats-msg").hide();
+				$("#stats-ranks").show();
+				startTimer();
+				$("#check-btn").prop("disabled", false);
+			}
+		} else {
+			window.aler("An error occurred. Please try again later.")
+		}
+	});
+}
+function getChallengeData(id, callback) {
+	let url = "http://localhost:5000/challenge?id=" + id;
+	$.ajax({url: url, success: function(result) {
+		callback(result);
+	}});
 }
 function setChallengeTitle(challengeTitle) {
 	challengeHeading = challengeTitle + " Challenge";

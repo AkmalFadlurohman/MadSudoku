@@ -34,9 +34,6 @@
 				No Challenges Available
 			</div>
 			<div id="challenges-list"></div>
-			<!-- <a href="#" onclick="startChallenge(this)">Newbie</a>
-			<a href="#" onclick="startChallenge(this)">Expert</a>
-			<a href="#" onclick="startChallenge(this)">Master</a> -->
 		</div>
 		<!-- Modals, Source: https://www.w3schools.com/howto/howto_css_modals.asp -->
 		<!-- How-to-Play Modal -->
@@ -130,8 +127,8 @@
 							<div class="grid-row">
 								{% for j in range(9) %}
 									<div class="grid-cell">
-										<input type="text" maxlength="1" name="cell-input[{{ j+i*9 }}]" class="cell-txt-input" required>
-										<input type="text" maxlength="1" name="cell-hidden[{{ j+i*9 }}]" hidden>
+										<input type="text" maxlength="1" id="cell-input-{{ j+i*9 }}" class="cell-txt-input" required>
+										<input type="text" maxlength="1" id="cell-hidden-{{ j+i*9 }}" hidden>
 									</div>
 								{% endfor %}
 							</div>
