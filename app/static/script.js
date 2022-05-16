@@ -10,12 +10,15 @@ function startChallenge(challenge) {
 	resetTimer();
 	clearBoard();
 	setChallengeTitle(challenge.innerHTML);
+	$("#stats-msg").hide();
+	$("#stats-ranks").show();
 	startTimer();
 	$("#check-btn").prop("disabled", false);
 }
 function setChallengeTitle(challengeTitle) {
-	$("#challenge-title").text(challengeTitle);
-	$("#stats-challenge").text(challengeTitle);
+	challengeHeading = challengeTitle + " Challenge";
+	$("#challenge-title").text(challengeHeading);
+	$("#stats-challenge").text(challengeHeading);
 }
 function clearBoard() {
 	for (i = 0; i < 82; i++) {
@@ -33,10 +36,20 @@ function updateUsername() {
 
 function stopChallenge() {
 	stopTimer();
+	copyTime();
+	$("#share-btn").show();
+	$("#stats-modal").modal("show");
+}
+
+function copyTime() {
+	$("#stats-hours").html($("#hours").html());
+	$("#stats-mins").html($("#mins").html());
+	$("#stats-seconds").html($("#seconds").html());
 }
 
 function shareStats() {
-	var text = "Example text to appear on clipboard";
+	var time = $("#stats-hours").html() + $("#stats-mins").html() + $("#stats-seconds").html();
+	var text = "I did MadSudoku " + $("#challenge-title").html() + " in " + time + ". What's your time?";
 	let temp = document.createElement("textarea");
 	temp.value = text;
 	temp.setAttribute("readonly", "");
@@ -46,5 +59,8 @@ function shareStats() {
 	temp.select();
 	document.execCommand("copy");
 	document.body.removeChild(temp);
-	$(".toast").toast("show");
+	$("#toast").css("visibility", "visible")
+	setTimeout((function() {
+		$("#toast").css("visibility", "hidden");
+	}), 1000);
 }

@@ -70,43 +70,44 @@
 					</div>
 					<div class="modal-body">
 						<h1 id="stats-challenge" class="text-center"></h1>
-						<h1 class="text-center">Your time: <span id="stats-time">00:00:00</span></h1>
+						<h1 class="text-center">Your time: <span id="stats-hours">00:</span><span id="stats-mins">00:</span><span id="stats-seconds">00</span></h1>
 						<br>
-						<h4 class="text-center">TOP 5 RANKS</h4>
-						<table class="table table-responsive table-striped table-hover text-center">
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>User1</td>
-									<td>00:00:00</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>User2</td>
-									<td>00:00:00</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>User3</td>
-									<td>00:00:00</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>User4</td>
-									<td>00:00:00</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>User5</td>
-									<td>00:00:00</td>
-								</tr>
-							</tbody>
-						</table>
-						<button type="button" onclick="shareStats()" class="btn btn-success center-block">SHARE <span class="glyphicon glyphicon-share" style="color:white;"></button>
-						<div class="toast">
-							<div class="toast-body">
+						<h4 id="stats-msg" class="text-center">No Ongoing Challenge</h4>
+						<div id="stats-ranks" style="display: none;">
+							<h4 class="text-center">TOP 5 RANKS</h4>
+							<table class="table table-responsive table-striped table-hover text-center">
+								<tbody>
+									<tr>
+										<td>1</td>
+										<td>User1</td>
+										<td>00:00:00</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>User2</td>
+										<td>00:00:00</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>User3</td>
+										<td>00:00:00</td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>User4</td>
+										<td>00:00:00</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>User5</td>
+										<td>00:00:00</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<button id="share-btn" style="display: none;" type="button" onclick="shareStats()" class="btn btn-success center-block">SHARE <span class="glyphicon glyphicon-share" style="color:white;"></button>
+						<div id="toast" class="text-center text-success" style="visibility: hidden;">
 								Copied to clipboard
-							</div>
 						</div>
 					</div>
 				</div>
