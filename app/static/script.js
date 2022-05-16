@@ -1,10 +1,28 @@
 /* Set the width of the sidebar to 20% of screen width */
 function openSidebar() {
-	$("#left-sidebar").width("20%");
+	getChallenges(function(data) {
+		if (data) {
+			const challenges = JSON.parse(data);
+			if (challenges.length > 0) {
+					$("#challenges-msg").hide();
+					for (var i=0;i<challenges.length;i++) {
+						$("#challenges-list").append("<a href='#' onclick='startChallenge(this)'>" + challenges[i].name + "</a>");
+					}
+					$("#left-sidebar").width("20%");
+			}
+		}
+	});
 }
 /* Set sidebar width to 0 (Hide sidebar) */
 function closeSidebar() {
+	$("#challenges-msg").show();
+	$("#challenges-list").empty();
 	$("#left-sidebar").width(0);
+}
+function getChallenges(callback) {
+	$.ajax({url: "http://localhost:5000/challenge/list", success: function(result){
+		callback(result);
+	}});
 }
 function startChallenge(challenge) {
 	resetTimer();
@@ -33,7 +51,6 @@ function updateUsername() {
 	$("#username-view").text(username);
 	$("#username-modal").modal("hide");
 }
-
 function stopChallenge() {
 	stopTimer();
 	copyTime();
