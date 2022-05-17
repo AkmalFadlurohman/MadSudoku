@@ -98,7 +98,6 @@ function stopChallenge() {
 	$("#share-btn").show();
 	$("#stats-modal").modal("show");
 }
-
 function copyTime() {
 	$("#stats-hours").html($("#hours").html());
 	$("#stats-mins").html($("#mins").html());
