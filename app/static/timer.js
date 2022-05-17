@@ -1,45 +1,48 @@
-var hours = 0;
-var mins = 0;
-var seconds = 0;
-// Timer count using recursive approach
-function startTimer(){
-	timex = setTimeout(function(){
-		seconds++;
-		if(seconds >59){
-			seconds=0;
-			mins++;
-			if(mins>59) {
-				mins=0;hours++;
-	 			if(hours <10) {
-					$("#hours").text("0"+hours+":")
-				} else {
-					$("#hours").text(hours+":");
-				}
-			}
-			if(mins<10){
-				$("#mins").text('0'+mins+":");
-			} else {
-				$("#mins").text(mins+":");
-			}
-		}
-		if(seconds <10) {
-			$("#seconds").text("0"+seconds);
-		} else {
-			$("#seconds").text(seconds);
-		}
-		startTimer();
-	}, 1000);
-}
+"use strict";
 
-function resetTimer() {
-	hours = 0;
-	mins = 0;
-	seconds = 0;
-	$("#hours").html("00:");
-	$("#mins").html("00:");
-	$("#seconds").html("00");
+let hour = 0;
+let minute = 0;
+let second = 0;
+let millisecond = 0;
+
+let cron;
+
+function startTimer() {
+	stopTimer();
+	cron = setInterval(() => { timer(); }, 10);
 }
 
 function stopTimer() {
-	clearTimeout(timex);
+	clearInterval(cron);
+}
+
+function resetTimer() {
+	hour = 0;
+	minute = 0;
+	second = 0;
+	$("#hours").html("00");
+	$("#mins").html("00");
+	$("#seconds").html("00");
+}
+
+function timer() {
+	if ((millisecond += 10) == 1000) {
+		millisecond = 0;
+		second++;
+	}
+	if (second == 60) {
+		second = 0;
+		minute++;
+	}
+	if (minute == 60) {
+		minute = 0;
+		hour++;
+	}
+	$("#hours").html(returnData(hour));
+	$("#mins").html(returnData(minute));
+	$("#seconds").html(returnData(second));
+}
+
+function returnData(input) {
+	return input > 10 ? input : `0${input}`
 }

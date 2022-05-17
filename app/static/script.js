@@ -25,23 +25,23 @@ function getChallengesList(callback) {
 	}});
 }
 function startChallenge(title, id) {
-	// stopTimer();
 	resetTimer();
 	clearBoard();
 	getChallengeData(id, function(data) {
 		if (data) {
-			var board = data.question;
+			let challenge = data;
+			let board = challenge.question;
+			let solution = challenge.solution;
 			for (var i=0;i<board.length;i++) {
 				var j = 0;
 				while (j<board[i].length) {
-					if (board[i][j] == 0) {
-						j++;
-					} else {
-						var cellIdx = j+i*9;
+					var cellIdx = j+i*9;
+					$("#cell-hidden-"+cellIdx).val(solution[i][j]);
+					if (board[i][j] != 0) {
 						$("#cell-input-"+cellIdx).val(board[i][j]);
 						$("#cell-input-"+cellIdx).prop("disabled", true);
-						j++;
 					}
+					j++;
 				}
 				setChallengeTitle(title);
 				$("#stats-msg").hide();
@@ -66,8 +66,9 @@ function setChallengeTitle(challengeTitle) {
 	$("#stats-challenge").text(challengeHeading);
 }
 function clearBoard() {
-	for (i = 0; i < 82; i++) {
-		$('.cell-txt-input[name="cell-input[' + (i) + ']"]').val("");
+	for (i = 0; i < 81; i++) {
+		$("#cell-input-"+i).val("");
+		$("#cell-input-"+i).prop("disabled", false);
 	}
 }
 function updateUsername() {
@@ -78,13 +79,25 @@ function updateUsername() {
 	$("#username-view").text(username);
 	$("#username-modal").modal("hide");
 }
+function checkSolution() {
+	for (var i=0;i<81;i++) {
+		if ($("#cell-input-"+i).val() === "") {
+			window.alert("There are still empty cells in the board!");
+			return;
+		}
+		if ($("#cell-input-"+i).val() != $("#cell-hidden-"+i).val()) {
+			window.alert("Incorrect number at cell: " + i); // Refine this to highlight cell
+			return;
+		}
+	}
+	stopChallenge();
+}
 function stopChallenge() {
 	stopTimer();
 	copyTime();
 	$("#share-btn").show();
 	$("#stats-modal").modal("show");
 }
-
 function copyTime() {
 	$("#stats-hours").html($("#hours").html());
 	$("#stats-mins").html($("#mins").html());
