@@ -14,18 +14,28 @@ class ResultHandler(Resource):
 		if not flag:
 			return msg, code
 		# return results by challenge_id
-		results = Result.query.filter_by(challenge_id=challenge_id).all()
+		results = Result.query.filter_by(challenge_id=challenge_id).order_by(Result.clear_time.asc()).limit(5)
 		if not results:
 			abort(404, err_msg.NOT_EXISTING.format("challenge_id"))
-		result_str = ""
+		result_list=[]
 		for r in results:
-			result_str += json.dumps({k:r.__dict__[k] \
-					if k is not 'clear_date'\
-					else r.__dict__[k].strftime("%d/%m/%Y, %H:%M:%S")
-					for k in ('id', 'user_name', 'challenge_id', 'clear_time', 'clear_date')})\
-					+ ','
-		result_str = '[' + result_str[:-1] + ']'
-		return json.loads(result_str)
+			dict = r.__dict__
+			data = {}
+			for k in ('id', 'user_name', 'challenge_id', 'clear_time', 'clear_date'):
+				data[k] = dict[k]
+				
+			data['clear_date'] = data['clear_date'].strftime("%d/%m/%Y, %H:%M:%S")
+			data['clear_time'] = self.convert_from_mil_sec(data['clear_time'])
+			result_list.append(data)
+					
+#		for r in results:
+#			result_str += json.dumps({k:r.__dict__[k] \
+#					if k is not 'clear_date'\
+#					else r.__dict__[k].strftime("%d/%m/%Y, %H:%M:%S")
+#					for k in ('id', 'user_name', 'challenge_id', 'clear_time', 'clear_date')})\
+#					+ ','
+#		result_str = '[' + result_str[:-1] + ']'
+		return result_list
 	
 	def post(self):
 		# 0. validation
@@ -38,7 +48,7 @@ class ResultHandler(Resource):
 		body_dict = json.loads(json_body)
 		challenge_id = body_dict['challenge_id']
 		user_name = body_dict['user_name']
-		clear_time = int(body_dict['clear_time'])
+		clear_time = self.convert_to_mil_sec(body_dict['clear_time'])
 		answer = body_dict['answer']
 		
 		# 2. check if the answer of user is correct
@@ -89,10 +99,13 @@ class ResultHandler(Resource):
 		clear_time = body_dict['clear_time']
 		if clear_time is None:
 			return False, err_msg.PARAM_EMPTY.format("clear_time"), 400
-		if type(clear_time) is not int:
-			return False, err_msg.MUST_INT.format("clear_time"), 400
-		if clear_time < 1:
-			return False, err_msg.MUST_POSITIVE_INT.format("clear_time"), 400
+		flag, msg, code = Validator.is_time_str(clear_time, "clear_time")
+		if not flag:
+			return False, msg, code
+		#if type(clear_time) is not int:
+		#	return False, err_msg.MUST_INT.format("clear_time"), 400
+		#if clear_time < 1:
+		#	return False, err_msg.MUST_POSITIVE_INT.format("clear_time"), 400
 	
 		answer = body_dict['answer']
 		if not answer:
@@ -101,4 +114,21 @@ class ResultHandler(Resource):
 			return False, err_msg.MUST_LIST.format("asnwer"), 400
 	
 		return True, None, None
+
+	def convert_to_mil_sec(self, time_str):
+		hour = 60 * 60 * 1000
+		minute = 60 * 1000
+		second = 1000
+		time = time_str.split(":")	
+		return int(time[0]) * hour + int(time[1]) * minute + int(time[2]) * second
+
+	def convert_from_mil_sec(self, mil_sec):
+		hour = 60 * 60 * 1000
+		minute = 60 * 1000
+		second = 1000
+		
+		h = str(int(mil_sec/hour)).zfill(2)
+		m = str(int((mil_sec%hour)/minute)).zfill(2)
+		s = str(int((mil_sec%minute)/second)).zfill(2)
+		return h+":"+m+":"+s
 

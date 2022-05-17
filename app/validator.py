@@ -1,5 +1,6 @@
 import json
 import app.err_msg as err_msg
+import time
 
 class Validator:
 
@@ -36,3 +37,11 @@ class Validator:
 		if not param:
 			return False, err_msg.PARAM_EMPTY.format(name), 400
 		return True, None, None
+
+	@classmethod
+	def is_time_str(self, time_str, name):
+		try:
+			time.strptime(time_str, '%H:%M:%S')
+			return True, None, None
+		except TypeError:
+			return False, err_msg.WRONG_TIME_FORMAT.format(name) ,400
