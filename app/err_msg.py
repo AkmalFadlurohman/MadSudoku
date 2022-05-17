@@ -1,0 +1,6 @@
+PARAM_EMPTY = "{} is required."
+NOT_EXISTING = "non existing {}."
+MUST_INT = "{} must be an integer."
+MUST_POSITIVE_INT = "{} must be a positive integer."
+MUST_JSON = "{} must be a json string."
+MUST_LIST = "{} must be a list."

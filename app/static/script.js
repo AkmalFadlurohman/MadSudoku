@@ -2,7 +2,7 @@
 function openSidebar() {
 	getChallengesList(function(data) {
 		if (data) {
-			const challenges = JSON.parse(data);
+			const challenges = data
 			if (challenges.length > 0) {
 					$("#challenges-msg").hide();
 					for (var i=0;i<challenges.length;i++) {
@@ -30,7 +30,7 @@ function startChallenge(title, id) {
 	clearBoard();
 	getChallengeData(id, function(data) {
 		if (data) {
-			var board = JSON.parse(data).question;
+			var board = data.question;
 			for (var i=0;i<board.length;i++) {
 				var j = 0;
 				while (j<board[i].length) {
