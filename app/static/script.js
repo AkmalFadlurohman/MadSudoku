@@ -25,6 +25,7 @@ function getChallengesList(callback) {
 	}});
 }
 function startChallenge(title, id) {
+	closeSidebar();
 	resetTimer();
 	clearBoard();
 	getChallengeData(id, function(data) {
@@ -50,7 +51,7 @@ function startChallenge(title, id) {
 				$("#check-btn").prop("disabled", false);
 			}
 		} else {
-			window.aler("An error occurred. Please try again later.")
+			window.alert("An error occurred. Please try again later.");
 		}
 	});
 }
@@ -82,11 +83,18 @@ function updateUsername() {
 function checkSolution() {
 	for (var i=0;i<81;i++) {
 		if ($("#cell-input-"+i).val() === "") {
-			window.alert("There are still empty cells in the board!");
+			$("#toast-empty-cells").show();
+			setTimeout((function() {
+				$("#toast-empty-cells").hide();
+			}), 2500);
 			return;
 		}
 		if ($("#cell-input-"+i).val() != $("#cell-hidden-"+i).val()) {
-			window.alert("Incorrect number at cell: " + i); // Refine this to highlight cell
+			$("#cell-input-"+i).focus();
+			$("#toast-incorrect-cells").show();
+			setTimeout((function() {
+				$("#toast-incorrect-cells").hide();
+			}), 2500);
 			return;
 		}
 	}
@@ -95,6 +103,7 @@ function checkSolution() {
 function stopChallenge() {
 	stopTimer();
 	copyTime();
+	$("#check-btn").prop("disabled", true);
 	$("#share-btn").show();
 	$("#stats-modal").modal("show");
 }
@@ -116,8 +125,8 @@ function shareStats() {
 	temp.select();
 	document.execCommand("copy");
 	document.body.removeChild(temp);
-	$("#toast").css("visibility", "visible")
+	$("#toast-share").css("visibility", "visible");
 	setTimeout((function() {
-		$("#toast").css("visibility", "hidden");
+		$("#toast-share").css("visibility", "hidden");
 	}), 1000);
 }
