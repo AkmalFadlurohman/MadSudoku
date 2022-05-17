@@ -66,8 +66,9 @@ function setChallengeTitle(challengeTitle) {
 	$("#stats-challenge").text(challengeHeading);
 }
 function clearBoard() {
-	for (i = 0; i < 82; i++) {
-		$('.cell-txt-input[name="cell-input[' + (i) + ']"]').val("");
+	for (i = 0; i < 81; i++) {
+		$("#cell-input-"+i).val("");
+		$("#cell-input-"+i).prop("disabled", false);
 	}
 }
 function updateUsername() {
