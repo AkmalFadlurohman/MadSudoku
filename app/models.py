@@ -27,7 +27,7 @@ class User(db.Model):
 	user_passwd = db.Column(db.Text, nullable=False)
 
 	def user_auth(self, user_name, user_passwd):
-		if self.user_name == user_name && self.user_passwd == user_passwd:
+		if self.user_name == user_name and self.user_passwd == user_passwd:
 			return True
 		return False
 
