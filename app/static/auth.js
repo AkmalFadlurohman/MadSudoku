@@ -20,7 +20,9 @@ function sendLoginRequest(username, password) {
 		contentType: "application/json",
 		success: function(response) {
 			if (response.result) {
-				("#username-view").text(username)
+				$("#username-view").text(username);
+				$("#auth-btn").hide();
+				$("#logout-btn").show();
 				$("#toast-login").text("Success");
 				$("#toast-login").css("visibility", "visible");
 				setTimeout((function() {
@@ -92,6 +94,19 @@ function setRegisterMessage(msg) {
 	setTimeout((function() {
 		$("#toast-register").css("visibility", "hidden");
 	}), 1500);
+}
+function logout(){
+	$.ajax({
+		type: "POST",
+		url: "http://localhost:5000/user/logout",
+		processData: false,
+		contentType: "application/json",
+		success: function(response) {
+			$("#username-view").text("Guest");
+			$("#auth-btn").show();
+			$("#logout-btn").hide();
+		}
+	});
 }
 function validateUsername(username) {
 	return (username != "" && username.length >= 2);

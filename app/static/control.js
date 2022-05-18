@@ -53,17 +53,6 @@ function updateUsername() {
 	//$("#username-view").text(username);
 	$("#username-modal").modal("hide");
 }
-function logout(){
-	$.ajax({
-		type: "POST",
-		url: "http://localhost:5000/user/logout",
-		processData: false,
-		contentType: "application/json",
-		success: function(response) {
-			$("#username-view").text('temp')
-		}
-	});
-}
 function getTopFive(challengeID) {
 	$("#ranks-table > tbody").empty();
 	let url = "http://localhost:5000/result?challenge_id=" + challengeID;

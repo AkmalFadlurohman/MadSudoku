@@ -31,7 +31,13 @@
 					<li><a href="#" data-toggle="modal" data-target="#info-modal"><span class="glyphicon glyphicon-info-sign"> Rules</span></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#" data-toggle="modal" data-target="#auth-modal"><span class="glyphicon glyphicon-log-in"> Login/Register</span></a></li>
+					{% if current_user.is_authenticated %}
+						<li id="auth-btn" style="display:none"><a href="#" data-toggle="modal" data-target="#auth-modal"><span class="glyphicon glyphicon-log-in"> Login/Register</span></a></li>
+						<li id="logout-btn"><a href="#" data-toggle="modal" data-target="#auth-modal" onclick="logout()"><span class="glyphicon glyphicon-log-out"> Logout</span></a></li>
+					{% else %}
+						<li id="auth-btn"><a href="#" data-toggle="modal" data-target="#auth-modal"><span class="glyphicon glyphicon-log-in"> Login/Register</span></a></li>
+						<li id="logout-btn" style="display:none"><a href="#" data-toggle="modal" data-target="#auth-modal" onclick="logout()"><span class="glyphicon glyphicon-log-out"> Logout</span></a></li>
+					{% endif %}
 					<li><a href="#" onclick="openStatsModal()"><span class="glyphicon glyphicon-signal"> Stats</span></a></li>
 				</ul>
 			</div>
