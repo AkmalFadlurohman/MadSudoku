@@ -11,7 +11,6 @@ function startChallenge(title, id) {
 				var j = 0;
 				while (j<board[i].length) {
 					var cellIdx = j+i*9;
-					$("#cell-hidden-"+cellIdx).val(solution[i][j]);
 					if (board[i][j] != 0) {
 						$("#cell-input-"+cellIdx).val(board[i][j]);
 						$("#cell-input-"+cellIdx).prop("disabled", true);
@@ -67,16 +66,6 @@ function checkSolution() {
 				}), 2500);
 				return;
 			}
-			// if ($("#cell-input-"+cellIdx).val() != $("#cell-hidden-"+cellIdx).val()) {
-			// 	$("#cell-input-"+cellIdx).focus();
-			// 	$("#toast-challenge").text("There are still cells with incorrect values!");
-			// 	$("#toast-challenge").show();
-			// 	setTimeout((function() {
-			// 		$("#toast-challenge").hide();
-			// 		$("#toast-challenge").text("");
-			// 	}), 2500);
-			// 	return;
-			// }
 			answer[i].push($("#cell-input-"+cellIdx).val());
 			j++;
 		}
@@ -88,7 +77,7 @@ function checkSolution() {
 		user_name: $("#username-view").html(),
 		clear_time: clearTime,
 		answer: answer
-	}
+	};
 	$.ajax({
 		type: "POST",
 		url: "http://localhost:5000/result/check",

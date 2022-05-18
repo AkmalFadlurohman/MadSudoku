@@ -67,22 +67,26 @@ function logout(){
 function getTopFive(challengeID) {
 	$("#ranks-table > tbody").empty();
 	let url = "http://localhost:5000/result?challenge_id=" + challengeID;
-	$.ajax({url: url, success: function(response) {
-		var ranks = JSON.parse(response);
-		if (ranks.length == 0) {
-			$("#ranks-msg").show();
-		} else {
-			$("#ranks-msg").hide();
-			for (var i=0;i<ranks.length;i++) {
-				row = "<tr><td>" + (i+1) + "</td><td>" + ranks[i].user_name + "</td><td>" + ranks[i].clear_time + "</td></tr>";
-				$("#ranks-table > tbody:last-child").append(row);
+	$.ajax({
+		url: url,
+		success: function(response) {
+			var ranks = JSON.parse(response);
+			if (ranks.length == 0) {
+				$("#ranks-msg").show();
+			} else {
+				$("#ranks-msg").hide();
+				for (var i=0;i<ranks.length;i++) {
+					row = "<tr><td>" + (i+1) + "</td><td>" + ranks[i].user_name + "</td><td>" + ranks[i].clear_time + "</td></tr>";
+					$("#ranks-table > tbody:last-child").append(row);
+				}
 			}
-		}
-		$("#stats-modal").modal("show");
-	}, error: function(XMLHttpRequest, textStatus, errorThrown) {
+			$("#stats-modal").modal("show");
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			$("#ranks-msg").show();
 			$("#stats-modal").modal("show");
-	}});
+		}
+	});
 }
 function shareStats() {
 	var time = $("#stats-time").html();
