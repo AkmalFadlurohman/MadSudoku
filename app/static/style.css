@@ -9,7 +9,7 @@ html, body {
 	width: 100%;
 }
 @media only screen and (max-width: 540px) {
-	.navbar {width:520px;}
+	.navbar {width:530px;}
 }
 .navbar-brand {
 	position: absolute;
