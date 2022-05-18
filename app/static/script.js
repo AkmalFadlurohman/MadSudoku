@@ -103,6 +103,17 @@ function updateUsername() {
 	//$("#username-view").text(username);
 	$("#username-modal").modal("hide");
 }
+function logout(){
+	$.ajax({
+        type: "POST",
+        url: "http://localhost:5000/user/logout",
+        processData: false,
+        contentType: "application/json",
+        success: function(response){
+            $("#username-view").text('temp')
+        }
+    });
+}
 function checkSolution() {
 	// Array to build game input data
 	let answer = new Array();

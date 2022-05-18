@@ -1,6 +1,6 @@
 from flask_restx import Resource
 from flask import request, abort
-from flask_login import login_user
+from flask_login import login_user, logout_user
 import json
 from app.models import User
 from app.validator import Validator
@@ -31,3 +31,8 @@ class UserController(Resource):
 		#token = uuid4()
 		login_user(user)
 		return {"result": True}
+
+	def logout():
+		logout_user()
+		return {"result":True}	
+		

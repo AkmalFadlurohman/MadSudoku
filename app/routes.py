@@ -47,6 +47,10 @@ def user_signup():
 def user_login():
     return UserController.login()
 
+@app.route('/user/logout', methods=['POST'])
+def user_logout():
+		return UserController.logout()
+
 #class TestApi(Resource):
 
 @app.route('/test', methods=['GET'])
