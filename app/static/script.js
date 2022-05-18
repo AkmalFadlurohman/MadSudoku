@@ -1,5 +1,6 @@
 /* Set the width of the sidebar to 20% of screen width */
 function openSidebar() {
+	$(".navbar-collapse").collapse("hide");
 	getChallengesList(function(data) {
 		if (data) {
 			const challenges = JSON.parse(data)
@@ -8,7 +9,7 @@ function openSidebar() {
 					for (var i=0;i<challenges.length;i++) {
 						$("#challenges-list").append("<a href='#' onclick='startChallenge(this.innerHTML, " + challenges[i].id + ")'>" + challenges[i].name + "</a>");
 					}
-					$("#left-sidebar").width("20%");
+					$("#left-sidebar").toggleClass("open");
 			}
 		}
 	});
@@ -17,7 +18,7 @@ function openSidebar() {
 function closeSidebar() {
 	$("#challenges-msg").show();
 	$("#challenges-list").empty();
-	$("#left-sidebar").width(0);
+	$("#left-sidebar").toggleClass("open");
 }
 function openStatsModal() {
 	let challengeID = $("#challenge-id").val();

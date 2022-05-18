@@ -9,7 +9,7 @@ html, body {
 	width: 100%;
 }
 @media only screen and (max-width: 540px) {
-	.navbar {width:530px;}
+	.navbar {width:640px;}
 }
 .navbar-brand {
 	position: absolute;
@@ -61,20 +61,29 @@ html, body {
 	position: absolute;
 	top: 0;
 	right: 25px;
-	font-size: 36px;
+	font-size: 30px;
 	margin-left: 50px;
 }
 
+.sidebar.open {
+	width: 20%;
+}
+
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-	.sidebar {padding-top: 15px;}
-	.sidebar a {font-size: 18px;}
+@media screen and (max-width: 540px) {
+	.sidebar.open {width: 130px;}
+	.sidebar a {padding: 30px 30px 30px 30px;}
+	.sidebar {font-size: 16px;}
 }
 
 .container.board {
 	position : relative;
 	width    : 500px;
 	margin   : 0 auto;
+}
+
+@media screen and (max-width: 540px) {
+	.container.board {margin-left: 110px;}
 }
 
 .game-container {
