@@ -19,9 +19,17 @@ function closeSidebar() {
 	$("#challenges-list").empty();
 	$("#left-sidebar").width(0);
 }
+function openStatsModal() {
+	let challengeID = $("#challenge-id").val();
+	if (challengeID !== "") {
+		getTopFive(challengeID);
+	} else {
+		$("#stats-modal").modal("show");
+	}
+}
 function getChallengesList(callback) {
-	$.ajax({url: "http://localhost:5000/challenge/list", success: function(result) {
-		callback(result);
+	$.ajax({url: "http://localhost:5000/challenge/list", success: function(response) {
+		callback(response);
 	}});
 }
 function startChallenge(title, id) {
@@ -58,10 +66,10 @@ function startChallenge(title, id) {
 		}
 	});
 }
-function getChallengeData(id, callback) {
-	let url = "http://localhost:5000/challenge?id=" + id;
-	$.ajax({url: url, success: function(result) {
-		callback(result);
+function getChallengeData(challengeID, callback) {
+	let url = "http://localhost:5000/challenge?id=" + challengeID;
+	$.ajax({url: url, success: function(response) {
+		callback(response);
 	}});
 }
 function setChallengeTitle(challengeTitle) {
@@ -84,7 +92,9 @@ function updateUsername() {
 	$("#username-modal").modal("hide");
 }
 function checkSolution() {
+	// Array to build game input data
 	let answer = new Array();
+	// Check for empty cells
 	for (var i=0;i<9;i++) {
 		answer[i] = new Array();
 		var j = 0;
@@ -145,19 +155,30 @@ function checkSolution() {
 function stopChallenge() {
 	$("#toast-challenge").text("Challenge Cleared");
 	$("#toast-challenge").show();
-	$("#stats-time").html(clearTime);
 	$("#check-btn").prop("disabled", true);
-	$("#share-btn").show();
-	$("#stats-modal").modal("show");
-}
-function setStatsTime() {
-	$("#stats-hours").html($("#hours").html());
-	$("#stats-mins").html($("#mins").html());
-	$("#stats-seconds").html($("#seconds").html());
-}
 
+	$("#stats-time").html("Your time: " + clearTime);
+	$("#share-btn").show();
+	getTopFive($("#challenge-id").val());
+}
+function getTopFive(challengeID) {
+	$("#ranks-table > tbody").empty();
+	let url = "http://localhost:5000/result?challenge_id=" + challengeID;
+	$.ajax({url: url, success: function(response) {
+		if (response.length == 0) {
+			$("#ranks-msg").show();
+		} else {
+			$("#ranks-msg").hide();
+			for (var i=0;i<response.length;i++) {
+				row = "<tr><td>" + (i+1) + "</td><td>" + response[i].user_name + "</td><td>" + response[i].clear_time + "</td></tr>";
+				$("#ranks-table > tbody:last-child").append(row);
+			}
+		}
+		$("#stats-modal").modal("show");
+	}});
+}
 function shareStats() {
-	var time = $("#stats-hours").html() + $("#stats-mins").html() + $("#stats-seconds").html();
+	var time = $("#stats-time").html();
 	var text = "I did MadSudoku " + $("#challenge-title").html() + " in " + time + ". What's your time?";
 	let temp = document.createElement("textarea");
 	temp.value = text;
