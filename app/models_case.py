@@ -1,6 +1,7 @@
 import unittest, os
 from app import app, db
 from app.models import Result, Challenge, User
+import app.models as models
 from datetime import datetime
 from werkzeug.exceptions import HTTPException
 
@@ -43,7 +44,7 @@ class ModelsCase(unittest.TestCase):
 		self.assertTrue(c1.name == 'challenge01')
 		with self.assertRaises(HTTPException) as http_error:
 			Challenge.get(3)
-			self.assertEqual(http_error.exception.code, 404)
+		self.assertEqual(http_error.exception.code, 404)
 
 	def test_challenge_get_list(self):
 		c_list = Challenge.get_list()
@@ -55,11 +56,60 @@ class ModelsCase(unittest.TestCase):
 
 	def test_result_top5_by_challenge_id(self):
 		r_list = Result.top5_by_challenge_id(2)
-		result = ((1,2,30000), (2,2,40000), (2,2,50000), (2,2,60000), (2,2,70000), (2,2,80000))
+		result = (('user01','challenge02',30000), ('user02','challenge02',40000), ('user02','challenge02',50000), ('user02','challenge02',60000), ('user02','challenge02',70000), ('user02','challenge02',80000))
 		i=0
 		for r in r_list:
 			d = r._asdict()
-			self.assertEqual(d.user_id, result[i][0])
-			self.assertEqual(d.challenge_id, result[i][1])
-			self.assertEqual(d.clear_time_id, result[i][2])
-			i+=1 
+			self.assertEqual(d['user_name'], result[i][0])
+			self.assertEqual(d['name'], result[i][1])
+			self.assertEqual(d['clear_time'], result[i][2])
+			i+=1
+		with self.assertRaises(HTTPException) as http_error:
+			Result.top5_by_challenge_id(3)
+		self.assertEqual(http_error.exception.code, 404)
+
+	def test_add(self):
+		Result.add(user_id=1, challenge_id=1, clear_time=5000)
+		res = (('user01','challenge01',5000), ('user02','challenge01',10000), ('user01','challenge01',20000))
+		i = 0
+		for r in Result.top5_by_challenge_id(1):
+			d = r._asdict()
+			self.assertEqual(d['user_name'], res[i][0])
+			self.assertEqual(d['name'], res[i][1])
+			self.assertEqual(d['clear_time'], res[i][2])
+			i+=1
+
+	def test_result___repr__(self):
+		r = Result(user_id=5, challenge_id=5, clear_time=500000, clear_date=datetime.now())
+		self.assertEqual(r.__repr__(), "<Result 55>")
+
+	def test_user_user_auth(self):
+		user = User.get(1)
+		self.assertTrue(user.user_auth('user01', 'passwd01'))
+		self.assertFalse(user.user_auth('user01', 'passwd02'))
+
+	def test_get(self):
+		user = User.get(1)
+		self.assertTrue(user.user_name == 'user01')
+		self.assertFalse(user.user_name == 'user02')
+		with self.assertRaises(HTTPException) as http_error:
+			User.get(3)
+		self.assertEqual(http_error.exception.code, 404)
+
+	def test_user_get_by_name(self):
+		user = User.get_by_name('user01')
+		self.assertEqual(user.user_name, 'user01')
+		self.assertFalse(user.user_name == 'user02')
+		
+		with self.assertRaises(HTTPException) as http_error:
+			User.get_by_name('user03')
+		self.assertEqual(http_error.exception.code, 404)
+
+	def test_user___repr__(self):
+		user = User.get(1)
+		self.assertEqual(user.__repr__(), "<User user01passwd01>")
+
+	def test_load_user(self):
+		user = models.load_user(1)
+		self.assertEqual(user.user_name, 'user01')
+		self.assertFalse(user.user_name == 'user02')

@@ -36,10 +36,9 @@ class Result(db.Model):
 					.add_columns(Challenge.name, User.user_name, Result.clear_time, Result.clear_date)\
 					.filter(Challenge.id==challenge_id)\
 					.order_by(Result.clear_time.asc()).limit(5)
-		results = db.session.execute(results)
-		if not results:
+		if results.count() == 0:
 			abort(404, err_msg.NOT_EXISTING.format("challenge_id"))
-		return results
+		return db.session.execute(results)
 
 	def add(user_id, challenge_id, clear_time):
 		result = Result(user_id=user_id, challenge_id=challenge_id, clear_time=clear_time,
