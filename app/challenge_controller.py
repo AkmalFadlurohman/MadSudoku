@@ -6,13 +6,8 @@ from app.validator import Validator
 import app.err_msg as err_msg
 
 class ChallengeController(Resource):
-	def get(self, list=None):
-		if list is None:
-			return self.get_challenge()
-		else:
-			return self.get_challenge_list()
 		
-	def get_challenge(self):
+	def get_challenge():
 		challenge_id = request.args.get('id')
 		flag, msg, code = Validator.check_digit(challenge_id, 'challenge_id')
 		if not flag:
@@ -26,10 +21,10 @@ class ChallengeController(Resource):
 						for k in ('name', 'level', 'question', 'solution')}
 		return challenge_dict
 
-	def get_challenge_list(self):
+	def get_challenge_list():
 		challenges = Challenge.query.all()
 		challenge_list = []
 		for c in challenges:
 			challenge_list.append({'id':c.id, 'name':c.name, 'level':c.level})
-		return challenge_list
+		return json.dumps(challenge_list)
 	

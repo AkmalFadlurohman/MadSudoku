@@ -2,7 +2,7 @@
 function openSidebar() {
 	getChallengesList(function(data) {
 		if (data) {
-			const challenges = data
+			const challenges = JSON.parse(data)
 			if (challenges.length > 0) {
 					$("#challenges-msg").hide();
 					for (var i=0;i<challenges.length;i++) {
