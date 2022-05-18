@@ -19,6 +19,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
 				</button>
 				<h1 class="navbar-brand">MadSudoku</h1>
 			</div>
@@ -28,6 +29,7 @@
 					<li><a href="#" data-toggle="modal" data-target="#info-modal"><span class="glyphicon glyphicon-info-sign"> Rules</span></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#" data-toggle="modal" data-target="#auth-modal"><span class="glyphicon glyphicon-log-in"> Login/Register</span></a></li>
 					<li><a href="#" onclick="openStatsModal()"><span class="glyphicon glyphicon-signal"> Stats</span></a></li>
 				</ul>
 			</div>
@@ -119,6 +121,67 @@
 				</div>
 			</div>
 		</div>
+		<!-- Login/Register Modal -->
+		<div id="auth-modal" class="modal fade" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title">Login</h1>
+					</div>
+					<div class="modal-body">
+						<form role="form" method="POST" action="">
+							<input type="hidden" name="_token" value="">
+							<div class="form-group">
+								<label class="control-label">Username</label>
+								<div>
+									<input type="textarea" class="form-control input-lg" name="login-username" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Password</label>
+								<div>
+									<input type="password" class="form-control input-lg" name="login-password">
+								</div>
+							</div>
+							<div class="form-group">
+								<div>
+									<button type="submit" class="btn btn-success">Login</button>
+								</div>
+							</div>
+						</form>
+						<h1>Or Signup!</h1>
+						<form role="form" method="POST" action="">
+							<input type="hidden" name="_token" value="">
+							<div class="form-group">
+								<label class="control-label">Username</label>
+								<div>
+									<input type="textarea" class="form-control input-lg" name="register-name" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Password</label>
+								<div>
+									<input type="password" class="form-control input-lg" name="register-password">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Confirm Password</label>
+								<div>
+									<input type="password" class="form-control input-lg" name="register-password-confirm">
+								</div>
+							</div>
+							<div class="form-group">
+								<div>
+									<button type="submit" class="btn btn-success">
+										Register
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 		<!-- Game board container -->
 		<h1 id="challenge-title" class="display-1 text-center" style="margin-top: 30px;"></h1>
 		<input type="hidden" id="challenge-id" value="">
@@ -126,9 +189,9 @@
 			<div class="row text-right">
 				Good luck, <u class="text-primary"><a href="#" id="username-view" data-toggle="modal" data-target="#username-modal">
 					{% if current_user.is_annonymous %}
-					Guest
+						Guest
 					{% else %}
-					{{ current_user.user_name }}
+						{{ current_user.user_name }}
 					{% endif %}
 					</a></u>
 			</div>
