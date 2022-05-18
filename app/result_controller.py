@@ -13,15 +13,8 @@ class ResultController(Resource):
 	def get_result():
 		challenge_id = request.args.get('challenge_id')
 		Validator.check_id(challenge_id, 'challenge_id')
-		# return results by challenge_id
-		results = Result.query.join(User, Result.user_id==User.id)\
-					.join(Challenge, Result.challenge_id==Challenge.id)\
-					.add_columns(Challenge.name, User.user_name, Result.clear_time, Result.clear_date)\
-					.filter(Challenge.id==challenge_id)\
-					.order_by(Result.clear_time.asc()).limit(5)
-		results = db.session.execute(results)
-		if not results:
-			abort(404, err_msg.NOT_EXISTING.format("challenge_id"))
+
+		results = Result.top5_by_challenge_id(challenge_id)		
 		result_list=[]
 		for r in results:
 			dict = r._asdict()
@@ -40,16 +33,14 @@ class ResultController(Resource):
 		# 0. validation
 		body_dict = ResultController.validate_clear(request.data)
 	
-		#1. convert json to dictionary and set values
+		#1. set values
 		challenge_id = body_dict['challenge_id']
 		user_name = body_dict['user_name']
 		clear_time = ResultController.convert_to_mil_sec(body_dict['clear_time'])
 		answer = body_dict['answer']
 	
 		# 2. check if the answer of user is correct
-		challenge = Challenge.query.filter_by(id=challenge_id).first()
-		if not challenge:
-			abort(404, err_msg.NOT_EXISTING.format("challenge_id"))
+		challenge = Challenge.get(challenge_id)
 		solution = json.loads(challenge.solution)
 		is_clear = True
 		for y in range(9):
@@ -65,13 +56,7 @@ class ResultController(Resource):
 			return {"clear":False}
 	
 		# 4.if it was correct, save the result and reponse true
-		user = User.query.filter_by(user_name=user_name).first()
-		if not user:
-			abort(404, err_msg.NOT_EXISTING.format("user_name"))
-		result = Result(user_id=user.id, challenge_id=challenge_id, clear_time=clear_time,
-				clear_date=datetime.now())
-		db.session.add(result)
-		db.session.commit()
+		Result.add(user.id, challenge_id, clear_time)
 	
 		return {"clear":True}
 
@@ -79,7 +64,6 @@ class ResultController(Resource):
 		body_dict = Validator.check_json(body, 'body')
 		print(type(body_dict), body_dict)
 		Validator.check_id(body_dict['challenge_id'], 'challenge_id')
-		#Validator.check_param(body_dict['user_name'], 'user_name')	
 		Validator.check_time_str(body_dict['clear_time'], 'clear_time')	
 		Validator.check_list(body_dict['answer'], 'answer')
 		
