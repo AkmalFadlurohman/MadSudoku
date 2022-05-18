@@ -5,19 +5,27 @@ from flask import abort
 
 class Validator:
 
-	def check_digit(id, id_name):
+	def check_id(id, id_name):
 		Validator.check_param(id, id_name)
+		if type(id) is int:
+			if id < 1:
+				abort(abort(400, err_msg.MUST_POSITIVE_INT.format(id_name)))
+			return
 		if not id.isdigit():
 			abort(400, err_msg.MUST_INT.format(id_name))
 		if int(id) < 1:
 			abort(400, err_msg.MUST_POSITIVE_INT.format(id_name))
 
-	def check_json_param(json_str, name):
+	def check_json_param(json_str, name, optionals=[]):
 		Validator.check_param(json_str, name)
 		try:
-			return json.loads(str)
+			dict = json.loads(json_str)
 		except TypeError as e:
 			abort(400, err_msg.MUST_JSON.format(name))
+		for key in dict:
+			if key not in optionals:
+				Validator.check_param(dict[key], key)
+		return dict
 
 	def check_param(param, name):
 		if not param:

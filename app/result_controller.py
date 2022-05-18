@@ -11,7 +11,7 @@ class ResultController(Resource):
 
 	def get_result():
 		challenge_id = request.args.get('challenge_id')
-		Validator.check_digit(challenge_id, 'challenge_id')
+		Validator.check_id(challenge_id, 'challenge_id')
 		# return results by challenge_id
 		results = Result.query.join(User, Result.user_id==User.id)\
 					.join(Challenge, Result.challenge_id==Challenge.id)\
@@ -74,9 +74,10 @@ class ResultController(Resource):
 
 	def validate_clear(body):
 		body_dict = Validator.check_json_param(body, 'body')
-		Validator.check_digit(body_dict['challenge_id'], 'challenge_id')
-		Validator.check_param(body_dict['user_name'], 'user_name')	
-		Validator.check_time_stri(body_dict['clear_time'], 'clear_time')	
+		print(type(body_dict), body_dict)
+		Validator.check_id(body_dict['challenge_id'], 'challenge_id')
+		#Validator.check_param(body_dict['user_name'], 'user_name')	
+		Validator.check_time_str(body_dict['clear_time'], 'clear_time')	
 		Validator.check_list(body_dict['answer'], 'answer')
 		
 		return body_dict			

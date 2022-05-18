@@ -9,7 +9,7 @@ class ChallengeController(Resource):
 		
 	def get_challenge():
 		challenge_id = request.args.get('id')
-		Validator.check_digit(challenge_id, 'challenge_id')
+		Validator.check_id(challenge_id, 'challenge_id')
 		challenge = Challenge.query.filter_by(id=challenge_id).first()
 		if challenge is None:
 			abort(404, err_msg.NOT_EXISTING.format('challenge_id'))

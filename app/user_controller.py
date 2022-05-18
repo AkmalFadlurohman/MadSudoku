@@ -1,26 +1,30 @@
 from flask_restx import Resource
 from flask import request, abort
+from flask_login import login_user
 import json
 from app.models import User
 from app.validator import Validator
 import app.err_msg as err_msg
+from app import db
 
 class UserController(Resource):
 		
-	def sign_up():
-		json_body = request.data
-		flag, msg, code = 
-		User(user_name=)
-		pass
+	def signup():
+		body = Validator.check_json(request.data, 'body')
+			
+		if User.query.filter_by(user_name=body['user_name']).first():
+			abort(400, err_msg.USED_USER_NAME.format(body['user_name']))
+		
+		new_user = User(user_name=body['user_name', user_passwd=body['user_passwd']])
+		db.session.add(new_user)
+		db.session.commit()
+		return {"result": True}
 	
-	def log_in():
-		pass
-
-	def validate_user_json(body):
-		flag, msg, code = Validator.check_json_param(body, 'body')
-		if not flag:
-			abort(code, msg)
-
-		body_dict = json.loads(body)
-		body_dict['user_name']
-
+	def login():
+		body = Validator.check_json(request.data, 'body')
+		
+		user = User.query.filter_by(user_name=body['user_name']).first():
+		if not user or user.user_auth(body['user_name'], body['user_passwd'])
+            abort(400, err_msg.WRONG_LOGIN_INFO)
+		login_user(user)
+		return {"result": True}

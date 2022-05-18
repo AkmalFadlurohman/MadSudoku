@@ -23,7 +23,7 @@ class Result(db.Model):
 
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	user_name = db.Column(db.String(64), nullable=False)
+	user_name = db.Column(db.String(64), unique=True, nullable=False)
 	user_passwd = db.Column(db.Text, nullable=False)
 
 	def user_auth(self, user_name, user_passwd):
