@@ -8,11 +8,10 @@ from datetime import datetime
 from app import db
 
 class ResultController(Resource):
+
 	def get_result():
 		challenge_id = request.args.get('challenge_id')
-		flag, msg, code = Validator.check_digit(challenge_id, 'challenge_id')
-		if not flag:
-			return msg, code
+		Validator.check_digit(challenge_id, 'challenge_id')
 		# return results by challenge_id
 		results = Result.query.join(User, Result.user_id==User.id)\
 					.join(Challenge, Result.challenge_id==Challenge.id)\
@@ -20,7 +19,6 @@ class ResultController(Resource):
 					.filter(Challenge.id==challenge_id)\
 					.order_by(Result.clear_time.asc()).limit(5)
 		results = db.session.execute(results)
-		#results = Result.query.filter_by(challenge_id=challenge_id).order_by(Result.clear_time.asc()).limit(5)
 		if not results:
 			abort(404, err_msg.NOT_EXISTING.format("challenge_id"))
 		result_list=[]
@@ -39,13 +37,9 @@ class ResultController(Resource):
 
 	def check_result():
 		# 0. validation
-		json_body = request.data
-		flag, msg, code = ResultController.validate_clear(json_body)
-		if not flag:
-			abort(code, msg)
+		body_dict = ResultController.validate_clear(request.data)
 	
 		#1. convert json to dictionary and set values
-		body_dict = json.loads(json_body)
 		challenge_id = body_dict['challenge_id']
 		user_name = body_dict['user_name']
 		clear_time = ResultController.convert_to_mil_sec(body_dict['clear_time'])
@@ -79,42 +73,13 @@ class ResultController(Resource):
 		return {"clear":True}
 
 	def validate_clear(body):
-		flag, msg, code = Validator.check_json_param(body, 'body')
-		if not flag:
-			return False, msg, code
-		body_dict = json.loads(body)
-	
-		challenge_id = body_dict['challenge_id']
-		if challenge_id is None:
-			return False, err_msg.PARAM_EMPTY.format("challenge_id"), 400
-		if type(challenge_id) is not int:
-			return False, err_msg.MUST_INT.format("challenge_id"), 400
-		if challenge_id < 1:
-			return False, err_msg.MUST_POSITIVE_INT.format("challenge_id"), 400
-	
-		user_name = body_dict['user_name']
-		flag, msg, code = Validator.check_param(user_name, 'user_name')
-		if not flag:
-			return False, msg, code,
-	
-		clear_time = body_dict['clear_time']
-		if clear_time is None:
-			return False, err_msg.PARAM_EMPTY.format("clear_time"), 400
-		flag, msg, code = Validator.is_time_str(clear_time, "clear_time")
-		if not flag:
-			return False, msg, code
-		#if type(clear_time) is not int:
-		#	return False, err_msg.MUST_INT.format("clear_time"), 400
-		#if clear_time < 1:
-		#	return False, err_msg.MUST_POSITIVE_INT.format("clear_time"), 400
-	
-		answer = body_dict['answer']
-		if not answer:
-			return False, err_msg.PARAM_EMPTY.format("answer"), 400
-		if type(answer) is not list:
-			return False, err_msg.MUST_LIST.format("asnwer"), 400
-	
-		return True, None, None
+		body_dict = Validator.check_json_param(body, 'body')
+		Validator.check_digit(body_dict['challenge_id'], 'challenge_id')
+		Validator.check_param(body_dict['user_name'], 'user_name')	
+		Validator.check_time_stri(body_dict['clear_time'], 'clear_time')	
+		Validator.check_list(body_dict['answer'], 'answer')
+		
+		return body_dict			
 
 	def convert_to_mil_sec(time_str):
 		hour = 60 * 60 * 1000

@@ -1,47 +1,36 @@
 import json
 import app.err_msg as err_msg
 import time
+from flask import abort
 
 class Validator:
 
-	@classmethod
-	def check_digit(self, id, id_name):
-		flag, msg, code = self.check_param(id, id_name)
-		if not flag:
-			return flag, msg, code
+	def check_digit(id, id_name):
+		Validator.check_param(id, id_name)
 		if not id.isdigit():
-			return False, err_msg.MUST_INT.format(id_name), 400
+			abort(400, err_msg.MUST_INT.format(id_name))
 		if int(id) < 1:
-			return False, err_msg.MUST_POSITIVE_INT.format(id_name), 400
-		return True, None, None
+			abort(400, err_msg.MUST_POSITIVE_INT.format(id_name))
 
-	@classmethod
-	def check_json_param(self, json_str, name):
-		flag, msg, code = self.check_param(json_str, name)
-		if not flag:
-			return flag, msg, code
-		if not self.is_json(json_str):
-			return False, err_msg.MUST_JSON.format(name), 400
-		return True, None, None
-
-	@classmethod
-	def is_json(self, str):
+	def check_json_param(json_str, name):
+		Validator.check_param(json_str, name)
 		try:
-			json.loads(str)
-		except ValueError as e:
-			return False
-		return True
+			return json.loads(str)
+		except TypeError as e:
+			abort(400, err_msg.MUST_JSON.format(name))
 
-	@classmethod
-	def check_param(self, param, name):
+	def check_param(param, name):
 		if not param:
-			return False, err_msg.PARAM_EMPTY.format(name), 400
-		return True, None, None
+			abort(400, err_msg.PARAM_EMPTY.format(name))
 
-	@classmethod
-	def is_time_str(self, time_str, name):
+	def check_time_str(time_str, name):
+		Validator.check_param(time_str, name)
 		try:
 			time.strptime(time_str, '%H:%M:%S')
-			return True, None, None
 		except TypeError:
-			return False, err_msg.WRONG_TIME_FORMAT.format(name) ,400
+			abort(400, err_msg.WRONG_TIME_FORMAT.format(name))
+
+	def check_list(list_param, name):
+		Validator.check_param(list_param, name)
+		if type(list_param) is not list:
+			abort(400, err_msg.MUST_LIST.format("answer"))

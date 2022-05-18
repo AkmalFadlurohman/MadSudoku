@@ -9,12 +9,10 @@ class ChallengeController(Resource):
 		
 	def get_challenge():
 		challenge_id = request.args.get('id')
-		flag, msg, code = Validator.check_digit(challenge_id, 'challenge_id')
-		if not flag:
-			return msg, code
+		Validator.check_digit(challenge_id, 'challenge_id')
 		challenge = Challenge.query.filter_by(id=challenge_id).first()
 		if challenge is None:
-			abort(400, err_msg.NOT_EXISTING.format('challenge_id'))
+			abort(404, err_msg.NOT_EXISTING.format('challenge_id'))
 		challenge_dict = {k:challenge.__dict__[k] \
 						if not k in ('question', 'solution') \
 						else json.loads(challenge.__dict__[k]) \
