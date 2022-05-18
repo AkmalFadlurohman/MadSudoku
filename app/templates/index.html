@@ -14,14 +14,21 @@
 	<body>
 		<!-- Navigation Bar, Source: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp -->
 		<nav class="navbar navbar-default" role="navigation">
-			<h1 class="navbar-brand">MadSudoku</h1>
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<h1 class="navbar-brand">MadSudoku</h1>
+			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-left">
-					<li><a href="#" onclick="openSidebar()"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
-					<li><a href="#" data-toggle="modal" data-target="#info-modal"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+					<li><a href="#" onclick="openSidebar()"><span class="glyphicon glyphicon-menu-hamburger"> Challenges</span></a></li>
+					<li><a href="#" data-toggle="modal" data-target="#info-modal"><span class="glyphicon glyphicon-info-sign"> Rules</span></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#" onclick="openStatsModal()"><span class="glyphicon glyphicon-signal"></span></a></li>
+					<li><a href="#" onclick="openStatsModal()"><span class="glyphicon glyphicon-signal"> Stats</span></a></li>
 				</ul>
 			</div>
 		</nav>
@@ -115,7 +122,7 @@
 		<!-- Game board container -->
 		<h1 id="challenge-title" class="display-1 text-center" style="margin-top: 30px;"></h1>
 		<input type="hidden" id="challenge-id" value="">
-		<div class="container">
+		<div class="container board">
 			<div class="row text-right">
 				Good luck, <u class="text-primary"><a href="#" id="username-view" data-toggle="modal" data-target="#username-modal">
 					{% if current_user.is_annonymous %}

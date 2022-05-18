@@ -5,7 +5,12 @@ html, body {
 	padding    : 0;
 	background : #faf8ef;
 }
-
+.navbar {
+	width: 100%;
+}
+@media only screen and (max-width: 540px) {
+	.navbar {width:520px;}
+}
 .navbar-brand {
 	position: absolute;
 	width: 100%;
@@ -66,7 +71,7 @@ html, body {
 	.sidebar a {font-size: 18px;}
 }
 
-.container {
+.container.board {
 	position : relative;
 	width    : 500px;
 	margin   : 0 auto;
