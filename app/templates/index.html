@@ -21,7 +21,7 @@
 					<li><a href="#" data-toggle="modal" data-target="#info-modal"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#" data-toggle="modal" data-target="#stats-modal"><span class="glyphicon glyphicon-signal"></span></a></li>
+					<li><a href="#" onclick="openStatsModal()"><span class="glyphicon glyphicon-signal"></span></a></li>
 				</ul>
 			</div>
 		</nav>
@@ -71,39 +71,14 @@
 					</div>
 					<div class="modal-body">
 						<h1 id="stats-challenge" class="text-center"></h1>
-						<h1 class="text-center">Your time: <span id="stats-time"></span></h1>
+						<h1 class="text-center" id="stats-time"></h1>
 						<br>
 						<h4 id="stats-msg" class="text-center">No Ongoing Challenge</h4>
 						<div id="stats-ranks" style="display: none;">
 							<h4 class="text-center">TOP 5 RANKS</h4>
-							<table class="table table-responsive table-striped table-hover text-center">
-								<tbody>
-									<tr>
-										<td>1</td>
-										<td>User1</td>
-										<td>00:00:00</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>User2</td>
-										<td>00:00:00</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>User3</td>
-										<td>00:00:00</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>User4</td>
-										<td>00:00:00</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>User5</td>
-										<td>00:00:00</td>
-									</tr>
-								</tbody>
+							<div id="ranks-msg" class="text-center" style="display: none;">No Data</div>
+							<table id="ranks-table" class="table table-responsive table-striped table-hover text-center">
+								<tbody></tbody>
 							</table>
 						</div>
 						<button id="share-btn" style="display: none;" type="button" onclick="shareStats()" class="btn btn-success center-block">SHARE <span class="glyphicon glyphicon-share" style="color:white;"></button>
@@ -124,14 +99,12 @@
 						<h4 class="modal-title text-center">EDIT USERNAME</h4>
 					</div>
 					<div class="modal-body">
-						<form role="form" action="#">
-							<div class="form-group">
-								<input id="username-input" type="textarea" class="form-control" placeholder="New Username" required>
-							</div>
-							<div class="form-group">
-								<button class="btn btn-success" onclick="updateUsername()">Save</button>
-							</div>
-						</form>
+						<div class="form-group">
+							<input id="username-input" type="textarea" class="form-control" placeholder="New Username" required>
+						</div>
+						<div class="form-group">
+							<button class="btn btn-success" onclick="updateUsername()">Save</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -157,11 +130,9 @@
 							</div>
 						{% endfor %}
 						<div class="control-container">
-							<div id="toast-challenge" class="text-center text-danger" style="display: none;">
-
-							</div>
+							<div id="toast-challenge" class="text-center text-danger" style="display: none;"></div>
 							<h2 class="text-center">Timer: <span id="hours">00</span>:<span id="mins">00</span>:<span id="seconds">00</span></h2>
-							<button id="check-btn"  onclick="checkSolution()" class="btn btn-primary btn-block" disabled>Check</button>
+							<button id="check-btn"  onclick="checkSolution()" class="btn btn-primary btn-block">Check</button>
 						</div>
 					</form>
 				</div>
