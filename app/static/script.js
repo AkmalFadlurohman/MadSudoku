@@ -44,12 +44,15 @@ function startChallenge(title, id) {
 					}
 					j++;
 				}
-				setChallengeTitle(title);
-				$("#stats-msg").hide();
-				$("#stats-ranks").show();
-				startTimer();
-				$("#check-btn").prop("disabled", false);
 			}
+			setChallengeTitle(title);
+			$("#toast-challenge").text("");
+			$("#toast-challenge").hide();
+			$("#challenge-id").val(id);
+			$("#stats-msg").hide();
+			$("#stats-ranks").show();
+			startTimer();
+			$("#check-btn").prop("disabled", false);
 		} else {
 			window.alert("An error occurred. Please try again later.");
 		}
@@ -81,33 +84,73 @@ function updateUsername() {
 	$("#username-modal").modal("hide");
 }
 function checkSolution() {
-	for (var i=0;i<81;i++) {
-		if ($("#cell-input-"+i).val() === "") {
-			$("#toast-empty-cells").show();
-			setTimeout((function() {
-				$("#toast-empty-cells").hide();
-			}), 2500);
-			return;
-		}
-		if ($("#cell-input-"+i).val() != $("#cell-hidden-"+i).val()) {
-			$("#cell-input-"+i).focus();
-			$("#toast-incorrect-cells").show();
-			setTimeout((function() {
-				$("#toast-incorrect-cells").hide();
-			}), 2500);
-			return;
+	let answer = new Array();
+	for (var i=0;i<9;i++) {
+		answer[i] = new Array();
+		var j = 0;
+		while (j<9) {
+			var cellIdx = j+i*9;
+			if ($("#cell-input-"+cellIdx).val() === "") {
+				$("#toast-challenge").text("There are still empty cells in the board!");
+				$("#toast-challenge").show();
+				setTimeout((function() {
+					$("#toast-challenge").hide();
+					$("#toast-challenge").text("");
+				}), 2500);
+				return;
+			}
+			// if ($("#cell-input-"+cellIdx).val() != $("#cell-hidden-"+cellIdx).val()) {
+			// 	$("#cell-input-"+cellIdx).focus();
+			// 	$("#toast-challenge").text("There are still cells with incorrect values!");
+			// 	$("#toast-challenge").show();
+			// 	setTimeout((function() {
+			// 		$("#toast-challenge").hide();
+			// 		$("#toast-challenge").text("");
+			// 	}), 2500);
+			// 	return;
+			// }
+			answer[i].push($("#cell-input-"+cellIdx).val());
+			j++;
 		}
 	}
-	stopChallenge();
+	stopTimer();
+	clearTime = $("#hours").html() + ":" + $("#mins").html() + ":" + $("#seconds").html();
+	data = {
+		challenge_id: $("#challenge-id").val(),
+		user_name: $("#username-view").html(),
+		clear_time: clearTime,
+		answer: answer
+	}
+	$.ajax({
+		type: "POST",
+		url: "http://localhost:5000/result/check",
+		data: JSON.stringify(data),
+		processData: false,
+		contentType: "application/json",
+		success: function(response){
+			if (response.clear) {
+				stopChallenge();
+			} else {
+				startTimer();
+				$("#toast-challenge").text("There are still cells with incorrect values!");
+				$("#toast-challenge").show();
+				setTimeout((function() {
+					$("#toast-challenge").hide();
+					$("#toast-challenge").text("");
+				}), 2500);
+			}
+		}
+	});
 }
 function stopChallenge() {
-	stopTimer();
-	copyTime();
+	$("#toast-challenge").text("Challenge Cleared");
+	$("#toast-challenge").show();
+	$("#stats-time").html(clearTime);
 	$("#check-btn").prop("disabled", true);
 	$("#share-btn").show();
 	$("#stats-modal").modal("show");
 }
-function copyTime() {
+function setStatsTime() {
 	$("#stats-hours").html($("#hours").html());
 	$("#stats-mins").html($("#mins").html());
 	$("#stats-seconds").html($("#seconds").html());
