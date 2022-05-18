@@ -2,6 +2,7 @@ from app import db, login
 from flask_login import UserMixin
 import app.err_msg as err_msg
 from flask import request, abort
+from datetime import datetime
 
 class Challenge(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

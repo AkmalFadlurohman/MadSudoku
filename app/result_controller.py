@@ -18,7 +18,6 @@ class ResultController(Resource):
 		result_list=[]
 		for r in results:
 			dict = r._asdict()
-			print(dict)
 			data = {}
 			for k in ('name', 'user_name', 'clear_time', 'clear_date'):
 				data[k] = dict[k]
@@ -56,6 +55,7 @@ class ResultController(Resource):
 			return {"clear":False}
 	
 		# 4.if it was correct, save the result and reponse true
+		user = User.get_by_name(user_name)
 		Result.add(user.id, challenge_id, clear_time)
 	
 		return {"clear":True}

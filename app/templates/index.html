@@ -188,10 +188,10 @@
 		<div class="container board">
 			<div class="row text-right">
 				Good luck, <u class="text-primary"><a href="#" id="username-view" data-toggle="modal" data-target="#username-modal">
-					{% if current_user.is_annonymous %}
-						Guest
-					{% else %}
+					{% if current_user.is_authenticated %}
 						{{ current_user.user_name }}
+					{% else %}
+						Guest
 					{% endif %}
 					</a></u>
 			</div>
