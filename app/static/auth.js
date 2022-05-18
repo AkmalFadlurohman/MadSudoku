@@ -20,6 +20,9 @@ function sendLoginRequest(username, password) {
 		contentType: "application/json",
 		success: function(response) {
 			if (response.result) {
+				$("#login-username").val("");
+				$("#login-password").val("");
+				$(".navbar-collapse").collapse("hide");
 				$("#username-view").text(username);
 				$("#auth-btn").hide();
 				$("#logout-btn").show();
@@ -71,6 +74,9 @@ function sendRegisterRequest(username, password) {
 		contentType: "application/json",
 		success: function(response) {
 			if (response.result) {
+				$("#register-username").val("");
+				$("#register-password").val("");
+				$("#register-password-confirm").val("");
 				$("#toast-register").text("Success. Please login again.");
 				$("#toast-register").css("visibility", "visible");
 				setTimeout((function() {
@@ -102,6 +108,7 @@ function logout(){
 		processData: false,
 		contentType: "application/json",
 		success: function(response) {
+			$(".navbar-collapse").collapse("hide");
 			$("#username-view").text("Guest");
 			$("#auth-btn").show();
 			$("#logout-btn").hide();

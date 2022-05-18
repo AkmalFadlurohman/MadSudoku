@@ -50,7 +50,6 @@ function updateUsername() {
 			$("#username-view").text(username)
 		}
 	});
-	//$("#username-view").text(username);
 	$("#username-modal").modal("hide");
 }
 function getTopFive(challengeID) {
