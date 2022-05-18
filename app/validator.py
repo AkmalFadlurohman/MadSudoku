@@ -16,7 +16,7 @@ class Validator:
 		if int(id) < 1:
 			abort(400, err_msg.MUST_POSITIVE_INT.format(id_name))
 
-	def check_json_param(json_str, name, optionals=[]):
+	def check_json(json_str, name, optionals=[]):
 		Validator.check_param(json_str, name)
 		try:
 			dict = json.loads(json_str)

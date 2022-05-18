@@ -4,6 +4,7 @@ import json
 from app.models import Result, Challenge
 from app.validator import Validator
 import app.err_msg as err_msg
+from flask_login import current_user
 
 class ChallengeController(Resource):
 		

@@ -1,4 +1,5 @@
-from app import db
+from app import db, login
+from flask_login import UserMixin
 
 class Challenge(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -21,7 +22,7 @@ class Result(db.Model):
 	def __repr__(self):
 		return '<Result {}>'.format(str(self.user_id) + str(self.challenge_id))
 
-class User(db.Model):
+class User(db.Model, UserMixin):
 	id = db.Column(db.Integer, primary_key=True)
 	user_name = db.Column(db.String(64), unique=True, nullable=False)
 	user_passwd = db.Column(db.Text, nullable=False)
@@ -33,3 +34,9 @@ class User(db.Model):
 
 	def __repr__(self):
 		return '<User {}>'.format(self.user_name + self.user_passwd)
+
+@login.user_loader
+def load_user(id):
+	user = User.query.get(int(id))
+	print(user)
+	return user

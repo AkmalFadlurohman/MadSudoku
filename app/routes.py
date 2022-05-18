@@ -10,6 +10,7 @@ from flask_restx import Resource
 from app.index_controller import IndexController
 from app.challenge_controller import ChallengeController
 from app.result_controller import ResultController
+from app.user_controller import UserController
 
 #api.add_resource(Index, "/", "/index")
 #api.add_resource(ChallengeHandler, "/challenge")
@@ -37,6 +38,14 @@ def get_result():
 @app.route('/result/check', methods=['POST'])
 def check_result():
 	return ResultController.check_result()
+
+@app.route('/user/signup', methods=['POST'])
+def user_signup():
+    return UserController.signup()
+
+@app.route('/user/login', methods=['POST'])
+def user_login():
+    return UserController.login()
 
 #class TestApi(Resource):
 

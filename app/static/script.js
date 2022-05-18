@@ -88,7 +88,19 @@ function updateUsername() {
 	if (username == "") {
 		return false;
 	}
-	$("#username-view").text(username);
+	userpasswd = $("#userpasswd-input").val();
+	data = { "user_name" : username, "user_passwd" : userpasswd }
+	$.ajax({
+		type: "POST",
+		url: "http://localhost:5000/user/login",
+		data: JSON.stringify(data),
+		processData: false,
+		contentType: "application/json",
+		success: function(response){
+			$("#username-view").text(username)
+		}
+	});
+	//$("#username-view").text(username);
 	$("#username-modal").modal("hide");
 }
 function checkSolution() {

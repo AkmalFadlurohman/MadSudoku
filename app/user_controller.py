@@ -6,6 +6,7 @@ from app.models import User
 from app.validator import Validator
 import app.err_msg as err_msg
 from app import db
+from uuid import uuid4
 
 class UserController(Resource):
 		
@@ -15,7 +16,7 @@ class UserController(Resource):
 		if User.query.filter_by(user_name=body['user_name']).first():
 			abort(400, err_msg.USED_USER_NAME.format(body['user_name']))
 		
-		new_user = User(user_name=body['user_name', user_passwd=body['user_passwd']])
+		new_user = User(user_name=body['user_name'], user_passwd=body['user_passwd'])
 		db.session.add(new_user)
 		db.session.commit()
 		return {"result": True}
@@ -23,8 +24,10 @@ class UserController(Resource):
 	def login():
 		body = Validator.check_json(request.data, 'body')
 		
-		user = User.query.filter_by(user_name=body['user_name']).first():
-		if not user or user.user_auth(body['user_name'], body['user_passwd'])
-            abort(400, err_msg.WRONG_LOGIN_INFO)
+		print(body)
+		user = User.query.filter_by(user_name=body['user_name']).first()
+		if not user or not user.user_auth(body['user_name'], body['user_passwd']):
+			abort(400, err_msg.WRONG_LOGIN_INFO)
+		#token = uuid4()
 		login_user(user)
 		return {"result": True}

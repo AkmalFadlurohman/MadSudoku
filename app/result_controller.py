@@ -6,6 +6,7 @@ from app.models import Result, Challenge, User
 import json
 from datetime import datetime
 from app import db
+import app.err_msg as err_msg
 
 class ResultController(Resource):
 
@@ -48,7 +49,7 @@ class ResultController(Resource):
 		# 2. check if the answer of user is correct
 		challenge = Challenge.query.filter_by(id=challenge_id).first()
 		if not challenge:
-			abort(400, err_msg.NOT_EXISTING.format("challenge_id"))
+			abort(404, err_msg.NOT_EXISTING.format("challenge_id"))
 		solution = json.loads(challenge.solution)
 		is_clear = True
 		for y in range(9):
@@ -64,8 +65,10 @@ class ResultController(Resource):
 			return {"clear":False}
 	
 		# 4.if it was correct, save the result and reponse true
-		user_id = 1
-		result = Result(user_id=user_id, challenge_id=challenge_id, clear_time=clear_time,
+		user = User.query.filter_by(user_name=user_name).first()
+		if not user:
+			abort(404, err_msg.NOT_EXISTING.format("user_name"))
+		result = Result(user_id=user.id, challenge_id=challenge_id, clear_time=clear_time,
 				clear_date=datetime.now())
 		db.session.add(result)
 		db.session.commit()
@@ -73,7 +76,7 @@ class ResultController(Resource):
 		return {"clear":True}
 
 	def validate_clear(body):
-		body_dict = Validator.check_json_param(body, 'body')
+		body_dict = Validator.check_json(body, 'body')
 		print(type(body_dict), body_dict)
 		Validator.check_id(body_dict['challenge_id'], 'challenge_id')
 		#Validator.check_param(body_dict['user_name'], 'user_name')	
