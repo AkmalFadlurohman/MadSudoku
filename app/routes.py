@@ -7,6 +7,7 @@ from flask_restx import Resource
 #import json
 #from app.validator import Validator
 #import app.err_msg
+from flask_login import login_required
 from app.index_controller import IndexController
 from app.challenge_controller import ChallengeController
 from app.result_controller import ResultController
@@ -49,7 +50,7 @@ def user_login():
 
 @app.route('/user/logout', methods=['POST'])
 def user_logout():
-		return UserController.logout()
+	return UserController.logout()
 
 #class TestApi(Resource):
 

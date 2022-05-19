@@ -22,5 +22,4 @@ class ChallengeController(Resource):
 		challenge_list = []
 		for c in challenges:
 			challenge_list.append({'id':c.id, 'name':c.name, 'level':c.level})
-		return json.dumps(challenge_list)
-	
+		return json.dumps(challenge_list)	

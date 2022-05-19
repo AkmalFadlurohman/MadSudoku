@@ -44,7 +44,7 @@ class ResultController(Resource):
 		is_clear = True
 		for y in range(9):
 			for x in range(9):
-				if solution[y][x] != answer[y][x]:
+				if solution[y][x] != int(answer[y][x]):
 					is_clear = False
 					break
 			if not is_clear:
@@ -66,6 +66,9 @@ class ResultController(Resource):
 		Validator.check_id(body_dict['challenge_id'], 'challenge_id')
 		Validator.check_time_str(body_dict['clear_time'], 'clear_time')	
 		Validator.check_list(body_dict['answer'], 'answer')
+		for row in body_dict['answer']:
+			for cell in row:
+				Validator.check_id(body_dict['challenge_id'], 'challenge_id')
 		
 		return body_dict			
 

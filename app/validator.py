@@ -2,6 +2,7 @@ import json
 import app.err_msg as err_msg
 import time
 from flask import abort
+from json import JSONDecodeError
 
 class Validator:
 
@@ -20,7 +21,7 @@ class Validator:
 		Validator.check_param(json_str, name)
 		try:
 			dict = json.loads(json_str)
-		except TypeError as e:
+		except JSONDecodeError as e:
 			abort(400, err_msg.MUST_JSON.format(name))
 		for key in dict:
 			if key not in optionals:
@@ -35,7 +36,7 @@ class Validator:
 		Validator.check_param(time_str, name)
 		try:
 			time.strptime(time_str, '%H:%M:%S')
-		except TypeError:
+		except ValueError:
 			abort(400, err_msg.WRONG_TIME_FORMAT.format(name))
 
 	def check_list(list_param, name):
