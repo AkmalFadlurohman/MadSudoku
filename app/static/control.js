@@ -1,6 +1,10 @@
-/* Set the width of the sidebar to 20% of screen width */
+// JavaScript for website controls
+
+// Get list of available challenges from server and open the sidebar menu
 function openSidebar() {
+	// CLose menu bar for mobile view
 	$(".navbar-collapse").collapse("hide");
+	// Callback to handle challenges list data
 	getChallengesList(function(data) {
 		if (data) {
 			const challenges = JSON.parse(data)
@@ -14,12 +18,18 @@ function openSidebar() {
 		}
 	});
 }
-/* Set sidebar width to 0 (Hide sidebar) */
+// Close opened sidebar
 function closeSidebar() {
 	$("#challenges-msg").show();
 	$("#challenges-list").empty();
 	$("#left-sidebar").toggleClass("open");
 }
+function getChallengesList(callback) {
+	$.ajax({url: "http://localhost:5000/challenge/list", success: function(response) {
+		callback(response);
+	}});
+}
+// Open Statistics Modal
 function openStatsModal() {
 	let challengeID = $("#challenge-id").val();
 	if (challengeID !== "") {
@@ -28,30 +38,7 @@ function openStatsModal() {
 		$("#stats-modal").modal("show");
 	}
 }
-function getChallengesList(callback) {
-	$.ajax({url: "http://localhost:5000/challenge/list", success: function(response) {
-		callback(response);
-	}});
-}
-function updateUsername() {
-	username = $("#username-input").val();
-	if (username == "") {
-		return false;
-	}
-	userpasswd = $("#userpasswd-input").val();
-	data = { "user_name" : username, "user_passwd" : userpasswd }
-	$.ajax({
-		type: "POST",
-		url: "http://localhost:5000/user/login",
-		data: JSON.stringify(data),
-		processData: false,
-		contentType: "application/json",
-		success: function(response){
-			$("#username-view").text(username)
-		}
-	});
-	$("#username-modal").modal("hide");
-}
+// Get the 5 fastest users who have solved the ongoing challenge
 function getTopFive(challengeID) {
 	$("#ranks-table > tbody").empty();
 	let url = "http://localhost:5000/result?challenge_id=" + challengeID;
@@ -76,9 +63,11 @@ function getTopFive(challengeID) {
 		}
 	});
 }
+// Handle share button click, build a text from data and copy it to user clipboard
 function shareStats() {
 	var time = $("#stats-time").html();
 	var text = "I did MadSudoku " + $("#challenge-title").html() + " in " + time + ". What's your time?";
+	// Text area to store the text temporarily
 	let temp = document.createElement("textarea");
 	temp.value = text;
 	temp.setAttribute("readonly", "");
@@ -86,6 +75,7 @@ function shareStats() {
 	temp.style.left = "-9999px";
 	document.body.appendChild(temp);
 	temp.select();
+	// COpy the text/string to user clipboard
 	document.execCommand("copy");
 	document.body.removeChild(temp);
 	$("#toast-share").css("visibility", "visible");

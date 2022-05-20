@@ -166,13 +166,12 @@
 		<input type="hidden" id="challenge-id" value="">
 		<div class="container board">
 			<div class="row text-right">
-				Good luck, <u class="text-primary"><a href="#" id="username-view">
+				Good luck,
 					{% if current_user.is_authenticated %}
-						{{ current_user.user_name }}
+						<u class="text-primary"><a href="#" id="username-view">{{ current_user.user_name }}</a></u>
 					{% else %}
-						Guest
+						<u class="text-primary"><a href="#" id="username-view">Guest</a></u>
 					{% endif %}
-					</a></u>
 			</div>
 			<div class="game-container">
 				<div class="grid-container">
@@ -189,7 +188,7 @@
 						<div class="control-container">
 							<div id="toast-challenge" class="text-center text-danger" style="display: none;"></div>
 							<h2 class="text-center">Timer: <span id="hours">00</span>:<span id="mins">00</span>:<span id="seconds">00</span></h2>
-							<button id="check-btn"  onclick="checkSolution()" class="btn btn-primary btn-block">Check</button>
+							<button id="check-btn"  onclick="checkSolution()" class="btn btn-primary btn-block" disabled>Check</button>
 						</div>
 					</form>
 				</div>
