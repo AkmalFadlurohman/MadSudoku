@@ -1,5 +1,6 @@
 from flask_restx import Resource
 from flask import request, abort
+from flask_login import current_user
 import app.err_msg
 from app.validator import Validator
 from app.models import Result, Challenge, User
@@ -54,7 +55,12 @@ class ResultController(Resource):
 		if not is_clear:
 			return {"clear":False}
 	
-		# 4.if it was correct, save the result and reponse true
+		# 4.if it was correct
+		# 4-a and if the user is not logged in, just return the result true.
+		if not current_user.is_authenticated:
+			print("not logged in user")
+			return {"clear":True}
+		# 4-a and if the user is logged in, save the result and reponse true
 		user = User.get_by_name(user_name)
 		Result.add(user.id, challenge_id, clear_time)
 	
