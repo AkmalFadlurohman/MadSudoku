@@ -43,7 +43,7 @@ def login():
 	return UserController.login()
 
 @app.route('/user/logout', methods=['POST'])
-#@login_required
+@login_required
 def user_logout():
 	return UserController.logout()
 
