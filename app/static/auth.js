@@ -31,6 +31,7 @@ function sendLoginRequest(username, password) {
 				$("#logout-btn").show();
 				// Display success message and close auth modal
 				$("#toast-login").text("Success");
+				$("#is-authenticated").val("true");
 				$("#toast-login").css("visibility", "visible");
 				setTimeout((function() {
 					$("#toast-login").css("visibility", "hidden");
@@ -123,6 +124,7 @@ function logout(){
 			// Hide menu bar on mobile view
 			$(".navbar-collapse").collapse("hide");
 			// Update username view to Guest and show login/register button
+			$("#is-authenticated").val("false");
 			$("#username-view").text("Guest");
 			$("#auth-btn").show();
 			$("#logout-btn").hide();

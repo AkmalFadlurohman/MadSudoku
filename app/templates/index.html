@@ -112,9 +112,11 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title text-center">LOGIN</h4>
+						<h4 class="text-center">Login or Register to have your clear time recorded in the ranks</h4>
 					</div>
 					<div class="modal-body">
+						<h4 class="modal-title text-center">LOGIN</h4>
+						<hr>
 						<div id="toast-login" class="text-center text-success" style="visibility: hidden;"></div>
 						<div class="form-group">
 							<label class="control-label">Username</label>
@@ -168,8 +170,10 @@
 			<div class="row text-right">
 				Good luck,
 					{% if current_user.is_authenticated %}
+						<input type=hidden id="is-authenticated" value=true>
 						<u class="text-primary"><a href="#" id="username-view">{{ current_user.user_name }}</a></u>
 					{% else %}
+						<input type=hidden id="is-authenticated" value=false>
 						<u class="text-primary"><a href="#" id="username-view">Guest</a></u>
 					{% endif %}
 			</div>

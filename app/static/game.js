@@ -116,7 +116,12 @@ function checkSolution() {
 }
 // Set related view components for stopped challenge/game mode
 function stopChallenge() {
-	$("#toast-challenge").text("Challenge Cleared");
+	if ($("#is-authenticated").val() === "true") {
+		$("#toast-challenge").text("Challenge Cleared");
+	} else if ($("#is-authenticated").val() === "false") {
+		$("#toast-challenge").text("Challenge Cleared. Please Register or Login if you want your time to be recorded");
+	}
+	$("#toast-challenge").text();
 	$("#toast-challenge").show();
 	$("#check-btn").prop("disabled", true);
 	// Show clear time and share button in stats modal
