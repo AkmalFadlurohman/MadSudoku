@@ -1,3 +1,8 @@
+// Clear game board on page refresh (For Mozilla Firefox)
+$( document ).ready(function() {
+    clearBoard();
+});
+
 // Handle challenge initiation and set challenge data to game board
 function startChallenge(title, id) {
 	closeSidebar();
@@ -83,8 +88,8 @@ function checkSolution() {
 		}
 	}
 	stopTimer(); // Pause timer before sending data to server
-	clearTime = $("#hours").html() + ":" + $("#mins").html() + ":" + $("#seconds").html();
-	data = {
+	var clearTime = $("#hours").html() + ":" + $("#mins").html() + ":" + $("#seconds").html();
+	var data = {
 		challenge_id: $("#challenge-id").val(),
 		user_name: $("#username-view").text(),
 		clear_time: clearTime,
@@ -125,6 +130,7 @@ function stopChallenge() {
 	$("#toast-challenge").show();
 	$("#check-btn").prop("disabled", true);
 	// Show clear time and share button in stats modal
+	clearTime = $("#hours").html() + ":" + $("#mins").html() + ":" + $("#seconds").html();
 	$("#stats-time").html("Your time: " + clearTime);
 	$("#share-btn").show();
 	getTopFive($("#challenge-id").val());
