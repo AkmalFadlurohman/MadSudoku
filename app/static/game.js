@@ -1,5 +1,5 @@
 // Clear game board on page refresh (For Mozilla Firefox)
-$( document ).ready(function() {
+$(document).ready(function() {
     clearBoard();
 });
 
