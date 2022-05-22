@@ -31,7 +31,6 @@ function startChallenge(title, id) {
 			// Set hidden form input to selected CHallenge ID
 			$("#challenge-id").val(id);
 			// Update stats modal
-			$("#stats-msg").hide();
 			$("#stats-ranks").show();
 			$("#stats-time").html("");
 			$("#share-btn").hide();
