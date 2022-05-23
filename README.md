@@ -23,7 +23,7 @@ Browsers: Google Chrome, Mozilla Firefox, Microsoft Edge, Apple Safari
 6. Open the address http://localhost:5000 in your web browser
 
 ## Test Setup
-for test, although we tried to move *_case.py files into test folder, the command below didn't work.
+For unit test, the test files are those files with the *_case.py prefix which can be found under the /app folder.
 ### Unit Test
 1. Install coverage module using the command "pip install coverage"
 2. Run the command "coverage run --source=./app  -m unittest discover -p *case.py"
