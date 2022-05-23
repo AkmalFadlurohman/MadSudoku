@@ -63,7 +63,7 @@ function clearBoard() {
 	}
 }
 // Handle checking user answer, send game data to server, and set response accordingly
-function checkSolution() {
+function checkSolution(isAuthenticated) {
 	// Array to build game data
 	let answer = new Array();
 	// Check for empty cells
@@ -104,10 +104,9 @@ function checkSolution() {
 		success: function(response) {
 			// If user answer is correct, stop ongoing challenge
 			if (response.clear) {
-				stopChallenge();
+				stopChallenge(isAuthenticated);
 			} else {
-				// Start timer again if current answer is incorrect and display message
-				startTimer();
+				startTimer(); // Start timer again if current answer is incorrect and display message
 				$("#toast-challenge").text("There are still cells with incorrect values!");
 				$("#toast-challenge").show();
 				setTimeout((function() {
@@ -119,10 +118,10 @@ function checkSolution() {
 	});
 }
 // Set related view components for stopped challenge/game mode
-function stopChallenge() {
-	if ($("#is-authenticated").val() === "true") {
+function stopChallenge(isAuthenticated) {
+	if (isAuthenticated) {
 		$("#toast-challenge").text("Challenge Cleared");
-	} else if ($("#is-authenticated").val() === "false") {
+	} else {
 		$("#toast-challenge").text("Challenge Cleared. Please Register or Login if you want your time to be recorded");
 	}
 	$("#toast-challenge").text();

@@ -29,13 +29,11 @@ function sendLoginRequest(username, password) {
 				// Hide the login/register button and show the logout button in place
 				$("#auth-btn").hide();
 				$("#logout-btn").show();
-				// Display success message and close auth modal
+				// Display success message and reload page to update data
 				$("#toast-login").text("Success");
-				$("#is-authenticated").val("true");
 				$("#toast-login").css("visibility", "visible");
 				setTimeout((function() {
-					$("#toast-login").css("visibility", "hidden");
-					$("#auth-modal").modal("hide");
+					location.reload();
 				}), 1500);
 			} else {
 				setLoginMessage("Login failed. Please try again later.");
@@ -121,13 +119,8 @@ function logout(){
 		processData: false,
 		contentType: "application/json",
 		success: function(response) {
-			// Hide menu bar on mobile view
-			$(".navbar-collapse").collapse("hide");
-			// Update username view to Guest and show login/register button
-			$("#is-authenticated").val("false");
-			$("#username-view").text("Guest");
-			$("#auth-btn").show();
-			$("#logout-btn").hide();
+			// Reload page to update data
+			location.reload();
 		}
 	});
 }
