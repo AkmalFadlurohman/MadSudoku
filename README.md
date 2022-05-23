@@ -10,17 +10,17 @@ Sudoku games with with new challenges available daily (in the future). Solve the
 - Sign-up and create a new account to play or just play as an anonymous Guest
 
 ## Software Requirements
-Stack: Flask, SQLite, JQery, Bootstrap
+Stack: Flask, SQLite, JQuery, Bootstrap
 
-Browsers: Google Chrome, CMozilla Firefox, Safari 
+Browsers: Google Chrome, Mozilla Firefox, Microsoft Edge, Safari
 
 ## Setup
 1. Download the repository files and unzip
-2. Open terminal/command line and set go to repository directory
+2. Open terminal/command line and change directory to repository directory
 3. Run "source venv/bin/activate" to activate python virtual environment
-4. Install all librarires and dependencies using "pip install -r requirements.txt"
-5. Run the server using "python3 mad_sudoku.py"
-6. Open http://localhost:5000 in your web browser
+4. Install all libraries and dependencies using the command "pip install -r requirements.txt"
+5. Run the game server using the command "python3 mad_sudoku.py"
+6. Open the address http://localhost:5000 in your web browser
 
 ## Test Setup
 
@@ -30,4 +30,3 @@ Browsers: Google Chrome, CMozilla Firefox, Safari
 |:--|:--|
 |23020648|Akmal Fadlurohman|
 |22948007|Changdae Jung|
-

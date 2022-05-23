@@ -65,8 +65,8 @@ function getTopFive(challengeID) {
 }
 // Handle share button click, build a text from data and copy it to user clipboard
 function shareStats() {
-	var time = $("#stats-time").html();
-	var text = "I did MadSudoku " + $("#challenge-title").html() + " in " + time + ". What's your time?";
+	var clearTime = $("#hours").html() + ":" + $("#mins").html() + ":" + $("#seconds").html();
+	var text = "I did MadSudoku " + $("#challenge-title").html() + " in " + clearTime + ". What's your time?";
 	// Text area to store the text temporarily
 	let temp = document.createElement("textarea");
 	temp.value = text;

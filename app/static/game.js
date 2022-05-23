@@ -1,3 +1,8 @@
+// Clear game board on page refresh (For Mozilla Firefox)
+$(document).ready(function() {
+    clearBoard();
+});
+
 // Handle challenge initiation and set challenge data to game board
 function startChallenge(title, id) {
 	closeSidebar();
@@ -26,7 +31,6 @@ function startChallenge(title, id) {
 			// Set hidden form input to selected CHallenge ID
 			$("#challenge-id").val(id);
 			// Update stats modal
-			$("#stats-msg").hide();
 			$("#stats-ranks").show();
 			$("#stats-time").html("");
 			$("#share-btn").hide();
@@ -59,7 +63,7 @@ function clearBoard() {
 	}
 }
 // Handle checking user answer, send game data to server, and set response accordingly
-function checkSolution() {
+function checkSolution(isAuthenticated) {
 	// Array to build game data
 	let answer = new Array();
 	// Check for empty cells
@@ -83,8 +87,8 @@ function checkSolution() {
 		}
 	}
 	stopTimer(); // Pause timer before sending data to server
-	clearTime = $("#hours").html() + ":" + $("#mins").html() + ":" + $("#seconds").html();
-	data = {
+	var clearTime = $("#hours").html() + ":" + $("#mins").html() + ":" + $("#seconds").html();
+	var data = {
 		challenge_id: $("#challenge-id").val(),
 		user_name: $("#username-view").text(),
 		clear_time: clearTime,
@@ -100,10 +104,9 @@ function checkSolution() {
 		success: function(response) {
 			// If user answer is correct, stop ongoing challenge
 			if (response.clear) {
-				stopChallenge();
+				stopChallenge(isAuthenticated);
 			} else {
-				// Start timer again if current answer is incorrect and display message
-				startTimer();
+				startTimer(); // Start timer again if current answer is incorrect and display message
 				$("#toast-challenge").text("There are still cells with incorrect values!");
 				$("#toast-challenge").show();
 				setTimeout((function() {
@@ -115,16 +118,17 @@ function checkSolution() {
 	});
 }
 // Set related view components for stopped challenge/game mode
-function stopChallenge() {
-	if ($("#is-authenticated").val() === "true") {
+function stopChallenge(isAuthenticated) {
+	if (isAuthenticated) {
 		$("#toast-challenge").text("Challenge Cleared");
-	} else if ($("#is-authenticated").val() === "false") {
+	} else {
 		$("#toast-challenge").text("Challenge Cleared. Please Register or Login if you want your time to be recorded");
 	}
 	$("#toast-challenge").text();
 	$("#toast-challenge").show();
 	$("#check-btn").prop("disabled", true);
 	// Show clear time and share button in stats modal
+	clearTime = $("#hours").html() + ":" + $("#mins").html() + ":" + $("#seconds").html();
 	$("#stats-time").html("Your time: " + clearTime);
 	$("#share-btn").show();
 	getTopFive($("#challenge-id").val());

@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<!-- Navigation Bar, Source: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp -->
-		<nav class="navbar navbar-default" role="navigation">
+		<nav class="navbar navbar-default">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 					<span class="icon-bar"></span>
@@ -23,7 +23,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<h1 class="navbar-brand">MadSudoku</h1>
+				<strong class="navbar-brand text-bold">MadSudoku</strong>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-left">
@@ -32,11 +32,9 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					{% if current_user.is_authenticated %}
-						<li id="auth-btn" style="display:none"><a href="#" data-toggle="modal" data-target="#auth-modal"><span class="glyphicon glyphicon-log-in"> Login/Register</span></a></li>
-						<li id="logout-btn"><a href="#" data-toggle="modal" data-target="#auth-modal" onclick="logout()"><span class="glyphicon glyphicon-log-out"> Logout</span></a></li>
+						<li id="logout-btn"><a href="#" onclick="logout()"><span class="glyphicon glyphicon-log-out"> Logout</span></a></li>
 					{% else %}
 						<li id="auth-btn"><a href="#" data-toggle="modal" data-target="#auth-modal"><span class="glyphicon glyphicon-log-in"> Login/Register</span></a></li>
-						<li id="logout-btn" style="display:none"><a href="#" data-toggle="modal" data-target="#auth-modal" onclick="logout()"><span class="glyphicon glyphicon-log-out"> Logout</span></a></li>
 					{% endif %}
 					<li><a href="#" onclick="openStatsModal()"><span class="glyphicon glyphicon-signal"> Stats</span></a></li>
 				</ul>
@@ -87,10 +85,9 @@
 						<h4 class="modal-title text-center">STATISTICS</h4>
 					</div>
 					<div class="modal-body">
-						<h1 id="stats-challenge" class="text-center"></h1>
-						<h1 class="text-center" id="stats-time"></h1>
+						<h1 id="stats-challenge" class="text-center">No Ongoing Challenge</h1>
+						<h1 class="text-center" id="stats-time">-</h1>
 						<br>
-						<h4 id="stats-msg" class="text-center">No Ongoing Challenge</h4>
 						<div id="stats-ranks" style="display: none;">
 							<h4 class="text-center">TOP 5 RANKS</h4>
 							<div id="ranks-msg" class="text-center" style="display: none;">No Data</div>
@@ -98,7 +95,7 @@
 								<tbody></tbody>
 							</table>
 						</div>
-						<button id="share-btn" style="display: none;" type="button" onclick="shareStats()" class="btn btn-success center-block">SHARE <span class="glyphicon glyphicon-share" style="color:white;"></button>
+						<button id="share-btn" style="display: none;" type="button" onclick="shareStats()" class="btn btn-success center-block"><span class="glyphicon glyphicon-share" style="color:white;"> SHARE</span></button>
 						<div id="toast-share" class="text-center text-success" style="visibility: hidden;">
 								Copied to clipboard
 						</div>
@@ -121,7 +118,7 @@
 						<div class="form-group">
 							<label class="control-label">Username</label>
 							<div>
-								<input type="textarea" class="form-control input-lg" id="login-username" required>
+								<input type="text" class="form-control input-lg" id="login-username" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -139,7 +136,7 @@
 						<div class="form-group">
 							<label class="control-label">Username</label>
 							<div>
-								<input type="textarea" class="form-control input-lg" id="register-username" required>
+								<input type="text" class="form-control input-lg" id="register-username" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -164,37 +161,37 @@
 			</div>
 		</div>
 		<!-- Game board container -->
-		<h1 id="challenge-title" class="display-1 text-center" style="margin-top: 30px;"></h1>
+		<h1 id="challenge-title" class="display-1 text-center" style="margin-top: 30px;">Select a Challenge From the Menu</h1>
 		<input type="hidden" id="challenge-id" value="">
 		<div class="container board">
 			<div class="row text-right">
 				Good luck,
 					{% if current_user.is_authenticated %}
-						<input type=hidden id="is-authenticated" value=true>
 						<u class="text-primary"><a href="#" id="username-view">{{ current_user.user_name }}</a></u>
 					{% else %}
-						<input type=hidden id="is-authenticated" value=false>
 						<u class="text-primary"><a href="#" id="username-view">Guest</a></u>
 					{% endif %}
 			</div>
 			<div class="game-container">
 				<div class="grid-container">
-					<form action="#" name="sudoku-board">
-						{% for i in range(9) %}
-							<div class="grid-row">
-								{% for j in range(9) %}
-									<div class="grid-cell">
-										<input type="text" maxlength="1" id="cell-input-{{ j+i*9 }}" class="cell-txt-input" required>
-									</div>
-								{% endfor %}
-							</div>
-						{% endfor %}
-						<div class="control-container">
-							<div id="toast-challenge" class="text-center text-danger" style="display: none;"></div>
-							<h2 class="text-center">Timer: <span id="hours">00</span>:<span id="mins">00</span>:<span id="seconds">00</span></h2>
-							<button id="check-btn"  onclick="checkSolution()" class="btn btn-primary btn-block" disabled>Check</button>
+					{% for i in range(9) %}
+						<div class="grid-row">
+							{% for j in range(9) %}
+								<div class="grid-cell">
+									<input type="text" maxlength="1" id="cell-input-{{j+i*9}}" class="cell-txt-input" required>
+								</div>
+							{% endfor %}
 						</div>
-					</form>
+					{% endfor %}
+					<div class="control-container">
+						<div id="toast-challenge" class="text-center text-danger" style="display: none;"></div>
+						<h2 class="text-center">Timer: <span id="hours">00</span>:<span id="mins">00</span>:<span id="seconds">00</span></h2>
+						{% if current_user.is_authenticated %}
+							<button id="check-btn"  onclick="checkSolution(true)" class="btn btn-primary btn-block" disabled>Check</button>
+						{% else %}
+							<button id="check-btn"  onclick="checkSolution(false)" class="btn btn-primary btn-block" disabled>Check</button>
+						{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>
